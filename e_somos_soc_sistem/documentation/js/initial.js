@@ -60,7 +60,17 @@ function ingreso_empresa(id_emp) {
     request = "controllers/login/empresa_log_controller.php";
     cadena = {"empresa": id_emp};
     metodo = function (datos) {
-        alert(datos);
+        form_iniciar_sesion(datos);
     };
     f_ajax(request, cadena, metodo);
+}
+
+/**
+ * Metodo de carga de formulario
+ * @param {type} respuesta
+ * @returns {undefined}
+ */
+function form_iniciar_sesion(respuesta) {
+//    alert("Usuario o Contraseña incorrectos" + respuesta);
+    $(location).attr('href', 'form_login.php'); 
 }
