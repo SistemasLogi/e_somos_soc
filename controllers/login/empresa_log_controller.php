@@ -7,7 +7,7 @@ if ($_POST) {
 
     $_SESSION["empresa"] = $emp;
     
-    echo 'la empresa es '.$_SESSION["empresa"];
+    echo $_SESSION["empresa"];
 } else {
     header("location: ../");
 }

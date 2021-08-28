@@ -1,4 +1,10 @@
 <!doctype html>
+<?php
+session_start();
+if (!isset($_SESSION["empresa"])) {
+    header("location:index.php");
+}
+?>
 <html lang="en">
 
     <head>
@@ -15,13 +21,13 @@
         <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
         <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
         <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
-        <title>V&G System</title>
+        <title>E_Somos_SOC Dashboard</title>
 
         <link href="../assets/img/Logos/Icono_ico.ico" rel="icon" type="imagen/ico">
         <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
     </head>
 
-    <body>
+    <body <?php if ($_SESSION["empresa"] == 1) { ?>style="background-color: #f0ffff"<?php } else { ?>style="background-color: #f8ffe6"<?php } ?>>
         <!-- ============================================================== -->
         <!-- main wrapper -->
         <!-- ============================================================== -->
@@ -31,66 +37,14 @@
             <!-- ============================================================== -->
             <div class="dashboard-header">
                 <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                    <a class="navbar-brand logo mr-auto" href="principal.php"><img src="../assets/img/Logos/logoTranp80.png" alt=""/></a>
+                    <a class="navbar-brand logo mr-auto" href="principal.php"><img class="img-fluid" src="assets/images/img_menu/<?php echo $_SESSION["empresa"]; ?>.png" alt=""/></a>
 
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse " id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto navbar-right-top">
-                            <li class="nav-item">
-                                <div id="custom-search" class="top-search-bar">
-                                    <input class="form-control" type="text" placeholder="Search..">
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown notification">
-                                <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
-                                <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
-                                    <li>
-                                        <div class="notification-title"> Notification</div>
-                                        <div class="notification-list">
-                                            <div class="list-group">
-                                                <a href="#" class="list-group-item list-group-item-action active">
-                                                    <div class="notification-info">
-                                                        <div class="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                        <div class="notification-list-user-block"><span class="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
-                                                            <div class="notification-date">2 min ago</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a href="#" class="list-group-item list-group-item-action">
-                                                    <div class="notification-info">
-                                                        <div class="notification-list-user-img"><img src="assets/images/avatar-3.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                        <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham </span>is now following you
-                                                            <div class="notification-date">2 days ago</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a href="#" class="list-group-item list-group-item-action">
-                                                    <div class="notification-info">
-                                                        <div class="notification-list-user-img"><img src="assets/images/avatar-4.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                        <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-                                                            <div class="notification-date">2 min ago</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a href="#" class="list-group-item list-group-item-action">
-                                                    <div class="notification-info">
-                                                        <div class="notification-list-user-img"><img src="assets/images/avatar-5.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                        <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-                                                            <div class="notification-date">2 min ago</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="list-footer"> <a href="#">View all notifications</a></div>
-                                    </li>
-                                </ul>
-                            </li>
+                        <ul class="navbar-nav ml-auto navbar-right-top">                            
                             <li class="nav-item dropdown connection">
                                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
                                 <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
@@ -130,9 +84,8 @@
                                         <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
                                         <span class="status"></span><span class="ml-2">Available</span>
                                     </div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Ajustes</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión</a>
                                 </div>
                             </li>
                         </ul>
@@ -145,10 +98,10 @@
             <!-- ============================================================== -->
             <!-- left sidebar -->
             <!-- ============================================================== -->
-            <div class="nav-left-sidebar sidebar-dark">
+            <div class="nav-left-sidebar sidebar-dark" <?php if ($_SESSION["empresa"] == 1) { ?>style="background-color: #defffa"<?php } else { ?>style="background-color: #edfff1"<?php } ?>>
                 <div class="menu-list">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                        <h3 class="d-xl-none d-lg-none">Nombre</h3>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -158,6 +111,7 @@
                                     Menu
                                 </li>
                                 <li class="nav-item ">
+                                    <a class="nav-link" href="#">E Commerce Dashboard</a>
                                     <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
                                     <div id="submenu-1" class="collapse submenu" style="">
                                         <ul class="nav flex-column">

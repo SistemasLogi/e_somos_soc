@@ -12,19 +12,21 @@ while (!file_exists($r_r . 'class/Mysql/Datos.php')) {
     $r_r .= '../';
 }
 /* * Clases de conexion a BD* */
-require $r_r . 'Class/Mysql/Datos.php';
-require $r_r . 'Class/Mysql/MySQL.php';
+require $r_r . 'class/Mysql/Datos.php';
+require $r_r . 'class/Mysql/MySQL.php';
 
 /* * Clases de tipo VO* */
-require $r_r . 'class/VO/Cliente_VO.php';
+require $r_r . 'class/VO/Usuario_VO.php';
+require $r_r . 'class/VO/Bus_VO.php';
+require $r_r . 'class/VO/Soc_in_VO.php';
+require $r_r . 'class/VO/Soc_out_VO.php';
 
 /* * Clases de tipo DAO* */
-require $r_r . 'class/DAO/Cliente_DAO.php';
+require $r_r . 'class/DAO/Usuario_DAO.php';
 
 /* * Clase PDF * */
 
 /* * Clase Email* */
 
 /* * Clase QR* */
-
 ?>
