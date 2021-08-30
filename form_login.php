@@ -17,6 +17,7 @@ if (!isset($_SESSION["empresa"])) {
         <link href="e_somos_soc_sistem/assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
         <link rel="stylesheet" href="e_somos_soc_sistem/assets/libs/css/style.css">
         <link rel="stylesheet" href="e_somos_soc_sistem/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+        <link href="e_somos_soc_sistem/documentation/css/alertify.css" rel="stylesheet" type="text/css"/>
         <style>
             html,
             body {
@@ -43,7 +44,7 @@ if (!isset($_SESSION["empresa"])) {
                     <span class="splash-description">Por favor ingrese usuario y contraseña.</span>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form id="formLogin">
                         <div class="form-group">
                             <input class="form-control form-control-lg" id="inpUsername" name="inpUsername" type="text" placeholder="Usuario" autocomplete="off">
                         </div>
@@ -54,7 +55,7 @@ if (!isset($_SESSION["empresa"])) {
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <span>No tienes cuenta o no recuerdas la contraseña? <a href="form_reset_password.php">Ingresa aqui!!</a></span>
+                    <span>No tienes cuenta o no recuerdas usuario y contraseña? <a href="form_reset_password.php">Ingresa aqui!!</a></span>
                 </div>
             </div>
         </div>
@@ -65,6 +66,11 @@ if (!isset($_SESSION["empresa"])) {
         <!-- Optional JavaScript -->
         <script src="e_somos_soc_sistem/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
         <script src="e_somos_soc_sistem/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="e_somos_soc_sistem/documentation/js/jquery.validate.js" type="text/javascript"></script>
+        <script src="e_somos_soc_sistem/documentation/js/additional-methods.js" type="text/javascript"></script>
+        <script src="e_somos_soc_sistem/documentation/js/localization/messages_es.js" type="text/javascript"></script>       
+        <script src="e_somos_soc_sistem/documentation/js/alertify.js" type="text/javascript"></script>
+        <script src="e_somos_soc_sistem/documentation/js/login.js" type="text/javascript"></script>
     </body>
 
 </html>

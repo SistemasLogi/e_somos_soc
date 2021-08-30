@@ -1014,6 +1014,10 @@ Borders
     border-top-color: #5969ff !important;
 }
 
+.border-top-dark {
+    border-top-color: #212529 !important;
+}
+
 .border-3 {
     border-width: 3px !important;
 }
@@ -6970,7 +6974,9 @@ Media Query
     .simple-card .nav.nav-tabs .nav-item .nav-link {
         padding: 17px 29px;}
 }
-
+.link_icon{
+    cursor: pointer;
+}
 
 
 

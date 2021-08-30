@@ -154,41 +154,6 @@ function reset_passw_user() {
 function redireccionar(){
     $(location).attr('href', 'form_login.php');
 }
-/**
- * Metodo de inicio de sesion
- * @param {type} respuesta
- * @returns {undefined}
- */
-function comprobarUsuario(respuesta) {
-//    alert("Usuario o Contraseña incorrectos" + respuesta);
-    if (respuesta == 1) {
-        $(location).attr('href', 'admin_logi.php');
-    } else if (respuesta == 2) {
-        $(location).attr('href', 'cliente_logi.php');
-    } else if (respuesta == 3) {
-        $(location).attr('href', 'cliente.php');
-    } else if (respuesta == 4) {
-        $(location).attr('href', 'area_control_clientes.php');
-    } else if (respuesta == 5) {
-        $(location).attr('href', 'mensajero_logi.php');
-    } else {
-        alert("Usuario o Contraseña Incorrectos");
-    }
-}
-/**
- * Metodo para cerrar sesion
- * @returns {undefined}
- */
-function cerrarSesion() {
-    request = "Control/Login_General/log_aut_control.php";
-    cadena = "a=1";
-    metodo = function (datos) {
-//        alertify.success('Sesión finalizada');
-        location.href = "index.php";
-    };
-    f_ajax(request, cadena, metodo);
-}
-
 
 /**
  * Metodo general que limpia campos de un formulario

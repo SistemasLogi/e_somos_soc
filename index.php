@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if (isset($_SESSION["us_id"])) {
+    header("location:e_somos_soc_sistem/principal.php");
+}
+?>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates

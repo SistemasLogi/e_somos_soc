@@ -37,4 +37,16 @@ class Usuario_DAO {
         return $BD->execute_query($sql);
     }
 
+    /**
+     * Funcion que retorna los datos de un usuario segun username ingresado
+     * @param type $empresa
+     * @param type $usuario
+     * @return type
+     */
+    function consultaUsuario_login($empresa, $usuario) {
+        $sql = "SELECT * FROM usuario WHERE em_id = " . $empresa . " AND us_usuario = '" . $usuario . "';";
+        $BD = new MySQL();
+        return $BD->query($sql);
+    }
+
 }
