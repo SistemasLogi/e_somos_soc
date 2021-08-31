@@ -3,15 +3,21 @@
     <div class="card-body">
         <form id="form" data-parsley-validate="" novalidate="">
             <div class="form-group row">
-                <label for="inputEmail2" class="col-3 col-lg-4 col-form-label text-right">KM ODO</label>
+                <label for="inpKmIn" class="col-3 col-lg-4 col-form-label text-right">KM ODO</label>
                 <div class="col-9 col-lg-8">
-                    <input id="inputEmail2" type="number" required="" placeholder="Km" class="form-control form-control-sm" disabled="">
+                    <input id="inpKmIn" name="inpKmIn" type="number" required="" placeholder="Km" class="form-control form-control-sm" autocomplete="off" disabled="">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="inputPassword2" class="col-3 col-lg-4 col-form-label text-right">SOC In</label>
+                <label for="inpSocIn" class="col-3 col-lg-4 col-form-label text-right">SOC In</label>
                 <div class="col-9 col-lg-8">
-                    <input id="inputPassword2" type="number" required="" placeholder="Soc" class="form-control form-control-sm" disabled="">
+                    <input id="inpSocIn" name="inpSocIn" type="number" required="" placeholder="Soc" class="form-control form-control-sm" autocomplete="off" disabled="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inpElectLineIn" class="col-3 col-lg-4 col-form-label text-right">N° Electrolinea</label>
+                <div class="col-9 col-lg-8">
+                    <input id="inpElectLineIn" name="inpElectLineIn" type="number" required="" placeholder="N° Electrolinea" class="form-control form-control-sm" autocomplete="off" disabled="">
                 </div>
             </div>
             <div class="row justify-content-center">

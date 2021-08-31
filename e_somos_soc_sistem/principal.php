@@ -154,47 +154,8 @@ if (!isset($_SESSION["us_id"])) {
                             <!-- ============================================================== -->
                             <!-- basic card -->
                             <!-- ============================================================== -->
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <!-- ============================================================== -->
-                                        <!-- new customer  -->
-                                        <!-- ============================================================== -->
-                                        <div class="col-lg-12">
-                                            <div class="card border-3 border-top border-top-dark">
-                                                <div class="card-body">
-                                                    <div class="metric-value d-inline-block text-center">
-                                                        <h2 class="mb-1">JTP147</h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- ============================================================== -->
-                                        <!-- end new customer  -->
-                                        <!-- ============================================================== -->
-                                        <h3 class="card-title border-bottom pb-2">MOVIL Z66-7001</h3>
-                                        <i class="m-r-10 mdi mdi-36px mdi-bus" style="color: #5969ff"></i>
-                                        <p class="card-text">Datos Ultimo SOC_Out Registrado</p>
-                                        <div class="table-responsive">                                        
-                                            <table class="table table-bordered table-sm">
-                                                <thead class="table-primary">
-                                                    <tr>
-                                                        <th scope="col">FECHA</th>
-                                                        <th scope="col">Km</th>
-                                                        <th scope="col">SOC Out</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>28-08-2021 23:46:02</td>
-                                                        <td>210</td>
-                                                        <td>99.12%</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12" id="sectionDataMovil">
+                                
                             </div>
                             <!-- ============================================================== -->
                             <!-- end basic card -->
@@ -202,13 +163,14 @@ if (!isset($_SESSION["us_id"])) {
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                                 <div class="card">
-                                    <h5 class="card-header">Basic Table</h5>
+                                    <h5 class="card-header">Tabla Buses Out</h5>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-sm table-striped table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th>OUT</th>
+                                                        <th>FECHA</th>
                                                         <th>MOVIL</th>
                                                         <th>PLACA</th>
                                                     </tr>
@@ -216,41 +178,49 @@ if (!isset($_SESSION["us_id"])) {
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #deaa00"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #deaa00"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #2ec551"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #2ec551"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
+                                                        <td>2021-08-30 10:00:00</td>
                                                         <td>Z66-7001</td>
                                                         <td>JTP147</td>
                                                     </tr>                                                    
@@ -267,50 +237,7 @@ if (!isset($_SESSION["us_id"])) {
                         </div>
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                <div class="card">
-                                    <h5 class="card-header">Datos de Salida</h5>
-                                    <div class="card-body">
-                                        <form id="form" data-parsley-validate="" novalidate="">
-                                            <div class="form-group row">
-                                                <label for="inputEmail2" class="col-3 col-lg-4 col-form-label text-right">KM ODO</label>
-                                                <div class="col-9 col-lg-8">
-                                                    <input id="inputEmail2" type="number" required="" placeholder="Km" class="form-control form-control-sm">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword2" class="col-3 col-lg-4 col-form-label text-right">SOC In</label>
-                                                <div class="col-9 col-lg-8">
-                                                    <input id="inputPassword2" type="number" required="" placeholder="Soc" class="form-control form-control-sm">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword2" class="col-3 col-lg-4 col-form-label text-right">Lavado</label>
-                                                <label class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" name="radio-inline" checked="" class="custom-control-input is-valid"><span class="custom-control-label">SI</span>
-                                                </label>
-                                                <label class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" name="radio-inline" class="custom-control-input is-invalid"><span class="custom-control-label">NO</span>
-                                                </label>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword2" class="col-3 col-lg-4 col-form-label text-right">N° Electrolinea</label>
-                                                <div class="col-9 col-lg-8">
-                                                    <input id="inputPassword2" type="number" required="" placeholder="Soc" class="form-control  form-control-sm">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword2" class="col-3 col-lg-4 col-form-label text-right">Observaciones</label>
-                                                <div class="col-9 col-lg-8">
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
-                                                </div>                                                
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <button type="submit" class="btn btn-space btn-brand">Guardar</button>
-                                                <button class="btn btn-space btn-secondary">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <!-- ============================================================== -->
                             <!-- end pageheader  -->
