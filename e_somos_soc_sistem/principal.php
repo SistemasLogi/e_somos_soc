@@ -1,7 +1,7 @@
 <!doctype html>
 <?php
 session_start();
-if (!isset($_SESSION["us_id"])) {
+if (!isset($_SESSION["tecnico"])) {
     header("location:../index.php");
 }
 ?>
@@ -146,7 +146,7 @@ if (!isset($_SESSION["us_id"])) {
                             <!-- horizontal form -->
                             <!-- ============================================================== -->
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12" id="sectionFormDatIngreso">
-                                
+
                             </div>
                             <!-- ============================================================== -->
                             <!-- end horizontal form -->
@@ -155,7 +155,7 @@ if (!isset($_SESSION["us_id"])) {
                             <!-- basic card -->
                             <!-- ============================================================== -->
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12" id="sectionDataMovil">
-                                
+
                             </div>
                             <!-- ============================================================== -->
                             <!-- end basic card -->
@@ -237,7 +237,7 @@ if (!isset($_SESSION["us_id"])) {
                         </div>
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                
+
                             </div>
                             <!-- ============================================================== -->
                             <!-- end pageheader  -->

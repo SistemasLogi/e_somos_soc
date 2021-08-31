@@ -88,8 +88,10 @@ function comprobarUsuario(respuesta) {
     if (respuesta == 1) {
         $(location).attr('href', 'e_somos_soc_sistem/principal.php');
     } else if (respuesta == 2) {
-        alertify.alert('contraseña no es valida').setHeader('<em> Cuidado! </em> ');
+        $(location).attr('href', 'e_somos_soc_sistem/admon.php');
     } else if (respuesta == 3) {
+        alertify.alert('usuario no es valido').setHeader('<em> Cuidado! </em> ');
+    }else if (respuesta == 4) {
         alertify.alert('usuario no es valido').setHeader('<em> Cuidado! </em> ');
     } else {
         alertify.alert('Usuario o Contraseña Incorrectos').setHeader('<em> ERROR! </em> ');

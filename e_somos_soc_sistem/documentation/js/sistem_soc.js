@@ -318,6 +318,7 @@ function datos_movilOut() {
             $("#inpLavSi").removeAttr('disabled');
             $("#inpLavNo").removeAttr('disabled');
             $("#inpElectLineOut").removeAttr('disabled');
+            $("#inpElectLineOut").attr('readonly', 'readonly');
             $("#inpObservOut").removeAttr('disabled');
             $("#sectionDataMovil").html(movil_data);
         } else {

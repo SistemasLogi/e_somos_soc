@@ -10,8 +10,9 @@
             </div>
             <div class="form-group row">
                 <label for="inpSocOut" class="col-3 col-lg-4 col-form-label text-right">SOC Out</label>
-                <div class="col-9 col-lg-8">
+                <div class="input-group input-group-sm col-9 col-lg-8 mb-3">
                     <input id="inpSocOut" name="inpSocOut" type="number" required="" placeholder="Soc" class="form-control form-control-sm" disabled="">
+                    <div class="input-group-append input-group-sm"><span class="input-group-text input-group-sm">%</span></div>
                 </div>
             </div>
             <div class="form-group row">
@@ -26,7 +27,7 @@
             <div class="form-group row">
                 <label for="inpElectLineOut" class="col-3 col-lg-4 col-form-label text-right">N° Electrolinea</label>
                 <div class="col-9 col-lg-8">
-                    <input id="inpElectLineOut" name="inpElectLineOut" type="number" required="" placeholder="Soc" class="form-control  form-control-sm" disabled="">
+                    <input id="inpElectLineOut" name="inpElectLineOut" type="number" required="" placeholder="N° Electrolinea" class="form-control  form-control-sm" disabled="">
                 </div>
             </div>
             <div class="form-group row">

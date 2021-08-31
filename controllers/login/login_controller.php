@@ -22,14 +22,23 @@ if ($_POST) {
                 $_SESSION["us_id"] = $array[$i]->us_id;
                 $_SESSION["us_cedula"] = $array[$i]->us_cedula;
                 $_SESSION["us_nombre"] = $array[$i]->us_nombre;
+                
 
-                echo 1;
+                if ($array[$i]->rol_id == 1) {
+                    $_SESSION["tecnico"] = $array[$i]->rol_id;
+                    echo 1;
+                }elseif ($array[$i]->rol_id == 2) {
+                    $_SESSION["admon"] = $array[$i]->rol_id;
+                    echo 2;
+                }
+
+                
             } else {
-                echo 2;//contraseña no es valida
+                echo 3; //contraseña no es valida
             }
         }
     } else {
-        echo 3;//usuario no es valido
+        echo 4; //usuario no es valido
     }
 } else {
     header("location: ../");
