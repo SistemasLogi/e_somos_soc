@@ -161,74 +161,8 @@ if (!isset($_SESSION["tecnico"])) {
                             <!-- end basic card -->
                             <!-- ============================================================== -->
 
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                                <div class="card">
-                                    <h5 class="card-header">Tabla Buses Out</h5>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-sm table-striped table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>OUT</th>
-                                                        <th>FECHA</th>
-                                                        <th>MOVIL</th>
-                                                        <th>PLACA</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #deaa00"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #deaa00"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #2ec551"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #2ec551"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><i class="m-r-10 mdi mdi-bus" style="color: #5969ff"></i></td>
-                                                        <td>2021-08-30 10:00:00</td>
-                                                        <td>Z66-7001</td>
-                                                        <td>JTP147</td>
-                                                    </tr>                                                    
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" id="sectionTable">
+                                
                             </div>
                             <!-- ============================================================== -->
                             <!-- end basic table  -->

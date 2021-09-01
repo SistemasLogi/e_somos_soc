@@ -24,6 +24,7 @@ require $r_r . 'class/VO/Soc_out_VO.php';
 /* * Clases de tipo DAO* */
 require $r_r . 'class/DAO/Usuario_DAO.php';
 require $r_r . 'class/DAO/Bus_DAO.php';
+require $r_r . 'class/DAO/Soc_out_DAO.php';
 
 /* * Clase PDF * */
 
