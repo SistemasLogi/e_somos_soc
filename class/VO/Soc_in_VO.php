@@ -22,6 +22,7 @@ class Soc_in_VO {
     private $sin_in;
     private $sin_observ;
     private $us_id;
+    private $sin_num_electrolinea;
 
     public function getSin_fecha() {
         return $this->sin_fecha;
@@ -51,6 +52,10 @@ class Soc_in_VO {
         return $this->us_id;
     }
 
+    public function getSin_num_electrolinea() {
+        return $this->sin_num_electrolinea;
+    }
+
     public function setSin_fecha($sin_fecha) {
         $this->sin_fecha = $sin_fecha;
     }
@@ -77,6 +82,10 @@ class Soc_in_VO {
 
     public function setUs_id($us_id) {
         $this->us_id = $us_id;
+    }
+
+    public function setSin_num_electrolinea($sin_num_electrolinea) {
+        $this->sin_num_electrolinea = $sin_num_electrolinea;
     }
 
 }

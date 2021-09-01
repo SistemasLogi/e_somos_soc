@@ -7,7 +7,7 @@
                 <div class="col-9 col-lg-8">
                     <input id="inpKmIn" name="inpKmIn" type="number" placeholder="Km" class="form-control form-control-sm" autocomplete="off" readonly="">
                 </div>
-                <div class="col-9 col-lg-8"  style="display: none;">
+                <div class="col-9 col-lg-8" style="display: none;">
                     <input id="inpNumBusIn" name="inpNumBusIn" type="text">
                 </div>
             </div>

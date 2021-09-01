@@ -17,6 +17,10 @@ if (!isset($_SESSION["tecnico"])) {
         <link rel="stylesheet" href="assets/libs/css/style.css">
         <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
         <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendor/datatables/css/dataTables.bootstrap4.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendor/datatables/css/buttons.bootstrap4.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendor/datatables/css/select.bootstrap4.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
         <link href="documentation/css/alertify.css" rel="stylesheet" type="text/css"/>
         <title>E_Somos_SOC Dashboard</title>
 
@@ -162,7 +166,7 @@ if (!isset($_SESSION["tecnico"])) {
                             <!-- ============================================================== -->
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" id="sectionTable">
-                                
+
                             </div>
                             <!-- ============================================================== -->
                             <!-- end basic table  -->
@@ -217,6 +221,17 @@ if (!isset($_SESSION["tecnico"])) {
             <script src="documentation/js/localization/messages_es.js" type="text/javascript"></script>       
             <script src="documentation/js/alertify.js" type="text/javascript"></script>
             <script src="documentation/js/sistem_soc.js" type="text/javascript"></script>
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            <script src="assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+            <script src="assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+            <script src="assets/vendor/datatables/js/data-table.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+            <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+            <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+            <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
             <!-- slimscroll js -->
             <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
             <!-- main js -->
