@@ -92,7 +92,6 @@ function formDatosIngreso() {
         $("#sectionFormDatIngreso").html(datos);
 
         $("#btnGuardarSocIn").click(function () {
-            buscarElectLine_ocupada($("#inpElectLineIn").val());
             validarGuardarSocIn(maxkm, minkm);
         });
     };
@@ -321,47 +320,6 @@ function tablaGeneralBusOut() {
     f_ajax(request, cadena, metodo);
 }
 
-var arregloBusIn;
-/**
- * Metodo que retorna el JSON de buses en ultimo proceso soc_in
- * disponibles por paridad para soc_out
- * @returns {undefined}
- */
-function arrayGeneralBusIn() {
-    request = "../controllers/soc_in/consulta_all_bus_out_controller.php";
-    cadena = "a=1"; //envio de parametros por POST
-    metodo = function (datos) {
-        arregloBusIn = $.parseJSON(datos);
-
-    };
-    f_ajax(request, cadena, metodo);
-}
-
-function buscarElectLine_ocupada(elect_digit) {
-    if (arregloBusIn !== 0) {
-
-        elect = false;
-        movil;
-        for (i = 0; i < arregloBusIn.length; i++) {
-
-            tmp = arregloBusIn[i];
-            if (tmp.sin_num_electrolinea == elect_digit) {
-                elect = true;
-                movil = tmp.bus_num_movil;
-                break;
-            }
-        }
-
-        if (elect == false) {
-            //guarda
-        } else {
-            alertify.alert('La electrolinea se encuentra ocupada por el MOVIL ' + movil).setHeader('<em> CUIDADO!! </em> ');
-        }
-
-    } else {
-//guarda
-    }
-}
 /**
  * Metodo que guarda registro en tabla soc_in
  * @returns {undefined}
@@ -376,10 +334,12 @@ function guardar_soc_in() {
             resetFormSocIn();
             $("#inpNumMovil").val("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusOut, 650);
+            setTimeout(tablaGeneralBusOut, 450);
         } else {
 //            alert(datos);
-            alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
+            $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+            setTimeout(tablaGeneralBusOut, 650);
+            alertify.alert('La Electrolinea se encuentra ocupada por el Movil ' + datos).setHeader('<em> ERROR!! </em> ');
         }
     };
     f_ajax(request, cadena, metodo);
