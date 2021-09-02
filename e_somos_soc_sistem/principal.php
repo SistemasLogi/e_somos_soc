@@ -99,10 +99,10 @@ if (!isset($_SESSION["tecnico"])) {
                                 <li class="nav-divider">
                                     Menu
                                 </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="#" id="enlSocIn"><i class="fas fa-battery-quarter"></i>SOC IN<span class="badge badge-success"></span></a>
-                                    <a class="nav-link" href="#" id="enlSocOut"><i class="fas fa-battery-full"></i>SOC OUT<span class="badge badge-success"></span></a>                                    
-                                    <a class="nav-link" href="#" id="enlAllBus"><i class="fas fa-bus"></i>ALL BUS<span class="badge badge-success"></span></a>                                    
+                                <li class="nav-item " id="elmMenu">
+                                    <a class="nav-link link_icon" id="enlSocIn"><i class="fas fa-battery-quarter"></i>SOC IN<span class="badge badge-success"></span></a>
+                                    <a class="nav-link link_icon" id="enlSocOut"><i class="fas fa-battery-full"></i>SOC OUT<span class="badge badge-success"></span></a>                                    
+                                    <a class="nav-link link_icon" id="enlAllBus"><i class="fas fa-bus"></i>ALL BUS<span class="badge badge-success"></span></a>                                    
                                 </li>
                             </ul>
                         </div>
@@ -158,14 +158,14 @@ if (!isset($_SESSION["tecnico"])) {
                             <!-- ============================================================== -->
                             <!-- basic card -->
                             <!-- ============================================================== -->
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12" id="sectionDataMovil">
+                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12" id="sectionDataMovil">
 
                             </div>
                             <!-- ============================================================== -->
                             <!-- end basic card -->
                             <!-- ============================================================== -->
 
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" id="sectionTable">
+                            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12" id="sectionTable">
 
                             </div>
                             <!-- ============================================================== -->
@@ -175,7 +175,7 @@ if (!isset($_SESSION["tecnico"])) {
                         </div>
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-
+                                <h1>SECCION BAJA</h1>
                             </div>
                             <!-- ============================================================== -->
                             <!-- end pageheader  -->

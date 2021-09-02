@@ -9,11 +9,13 @@ $(document).ready(function () {
         formBuscarIn();
         $("#sectionDataMovil").html("");
         tablaGeneralBusOut();
+        activeMenu("#enlSocIn");
     });
     $("#enlSocOut").click(function () {
         formBuscarOut();
         $("#sectionDataMovil").html("");
         tablaGeneralBusIn();
+        activeMenu("#enlSocOut");
     });
 
 });
@@ -50,6 +52,11 @@ function f_ajax(request, cadena, metodo) {
         }
     });
 }
+
+function activeMenu(id) {
+    $("#elmMenu a").removeClass('active');
+    $(id).addClass('active');
+}
 /************************/
 /**funciones soc_in**/
 /************************/
@@ -85,8 +92,8 @@ function formDatosIngreso() {
         $("#sectionFormDatIngreso").html(datos);
 
         $("#btnGuardarSocIn").click(function () {
-            km = 330 + temp_bus_in.sin_km;
-            validarGuardarSocIn(km);
+            buscarElectLine_ocupada($("#inpElectLineIn").val());
+            validarGuardarSocIn(maxkm, minkm);
         });
     };
     f_ajax(request, cadena, metodo);
@@ -111,15 +118,17 @@ function validarBuscarMovil() {
 }
 /**
  * Metodo de validacion formsoc in
- * @param {type} km
+ * @param {type} maxkm
+ * @param {type} minkm
  * @returns {undefined}
  */
-function validarGuardarSocIn(km) {
+function validarGuardarSocIn(maxkm, minkm) {
     $("#formSocIn").validate({
         rules: {
             inpKmIn: {
                 required: true,
-                max: km
+                max: maxkm,
+                min: minkm
             },
             inpSocIn: {
                 required: true,
@@ -137,7 +146,8 @@ function validarGuardarSocIn(km) {
     });
 }
 
-var temp_bus_in;
+var maxkm;
+var minkm;
 /**
  * Metodo que retorna los datos del movil consultado
  * @returns {undefined}
@@ -146,8 +156,8 @@ function datos_movil() {
     request = "../controllers/soc_in/consulta_bus_x_mov_controller.php";
     cadena = $("#formBuscMovil").serialize();//envio de parametros por POST
     metodo = function (datos) {
-//        alert(datos);    
-
+//        alert(datos);
+//        $("#sectionDataMovil").html(datos);
         if (datos == 1) {
             alertify.alert('Último registro del bus soc_in no cumple con la paridad, debe registrar un soc_out antes de realizar este proceso').setHeader('<em> WARNING! </em> ');
             resetFormSocOut();
@@ -160,9 +170,16 @@ function datos_movil() {
         } else {
             arreglo_mov = $.parseJSON(datos);
 
-
             if (arreglo_mov !== 0) {
                 temp_bus_in = arreglo_mov[0];
+
+                if (temp_bus_in.sin_km == "" || temp_bus_in.sin_km == null) {
+                    maxkm = parseInt(999999);
+                    minkm = parseInt(1);
+                } else {
+                    maxkm = parseInt(330) + parseInt(temp_bus_in.sin_km);
+                    minkm = parseInt(temp_bus_in.sin_km);
+                }
 
                 if (temp_bus_in.em_id == 1) {
                     color = '#2ec551';
@@ -182,6 +199,7 @@ function datos_movil() {
                                     </div>\n\
                                 </div>\n\
                             </div>\n\
+                            <h4 class="card-title border-bottom pb-2">' + temp_bus_in.tip_tipo + '</h4>\n\
                             <h3 class="card-title border-bottom pb-2">MOVIL ' + temp_bus_in.bus_num_movil + '</h3>\n\
                             <i class="m-r-10 mdi mdi-36px mdi-bus" style="color: ' + color + '"></i>\n\
                             <p class="card-text">Datos Ultimo SOC_Out Registrado</p>\n\
@@ -227,7 +245,6 @@ function datos_movil() {
                 resetFormSocIn();
             }
         }
-
     };
     f_ajax(request, cadena, metodo);
 }
@@ -252,7 +269,7 @@ function resetFormSocIn() {
  * @returns {undefined}
  */
 function tablaGeneralBusOut() {
-    request = "../controllers/soc_in/consulta_all_bus_out_controller.php";
+    request = "../controllers/soc_out/consulta_all_bus_in_controller.php";
     cadena = "a=1"; //envio de parametros por POST
     metodo = function (datos) {
         arregloBusout = $.parseJSON(datos);
@@ -269,6 +286,8 @@ function tablaGeneralBusOut() {
                                                 <th>FECHA</th>\n\
                                                 <th>MOVIL</th>\n\
                                                 <th>PLACA</th>\n\
+                                                <th>TIPO</th>\n\
+                                                <th>Km</th>\n\
                                             </tr>\n\
                                         </thead>\n\
                                         <tbody>';
@@ -277,7 +296,9 @@ function tablaGeneralBusOut() {
                 datosBusOut += '<tr id="fila' + i + '"><td><i class="m-r-10 mdi mdi-bus" style="color: #28a745"></i></td>';
                 datosBusOut += '<td>' + tmp.out_fecha + '</td>';
                 datosBusOut += '<td>' + tmp.bus_num_movil + '</td>';
-                datosBusOut += '<td>' + tmp.bus_placa + '</td></tr>';
+                datosBusOut += '<td>' + tmp.bus_placa + '</td>';
+                datosBusOut += '<td>' + tmp.tip_tipo + '</td>';
+                datosBusOut += '<td>' + tmp.sin_km + '</td></tr>';
             }
             datosBusOut += "</tbody></table>";
             $("#sectionTable").html(datosBusOut);
@@ -300,6 +321,47 @@ function tablaGeneralBusOut() {
     f_ajax(request, cadena, metodo);
 }
 
+var arregloBusIn;
+/**
+ * Metodo que retorna el JSON de buses en ultimo proceso soc_in
+ * disponibles por paridad para soc_out
+ * @returns {undefined}
+ */
+function arrayGeneralBusIn() {
+    request = "../controllers/soc_in/consulta_all_bus_out_controller.php";
+    cadena = "a=1"; //envio de parametros por POST
+    metodo = function (datos) {
+        arregloBusIn = $.parseJSON(datos);
+
+    };
+    f_ajax(request, cadena, metodo);
+}
+
+function buscarElectLine_ocupada(elect_digit) {
+    if (arregloBusIn !== 0) {
+
+        elect = false;
+        movil;
+        for (i = 0; i < arregloBusIn.length; i++) {
+
+            tmp = arregloBusIn[i];
+            if (tmp.sin_num_electrolinea == elect_digit) {
+                elect = true;
+                movil = tmp.bus_num_movil;
+                break;
+            }
+        }
+
+        if (elect == false) {
+            //guarda
+        } else {
+            alertify.alert('La electrolinea se encuentra ocupada por el MOVIL ' + movil).setHeader('<em> CUIDADO!! </em> ');
+        }
+
+    } else {
+//guarda
+    }
+}
 /**
  * Metodo que guarda registro en tabla soc_in
  * @returns {undefined}
@@ -312,6 +374,9 @@ function guardar_soc_in() {
         if (datos == 1) {
             alertify.warning('Guardado OK!!');
             resetFormSocIn();
+            $("#inpNumMovil").val("");
+            $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+            setTimeout(tablaGeneralBusOut, 650);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
@@ -449,6 +514,7 @@ function datos_movilOut() {
                                     </div>\n\
                                 </div>\n\
                             </div>\n\
+                            <h4 class="card-title border-bottom pb-2">' + temp.tip_tipo + '</h4>\n\
                             <h3 class="card-title border-bottom pb-2">MOVIL ' + temp.bus_num_movil + '</h3>\n\
                             <i class="m-r-10 mdi mdi-36px mdi-bus" style="color: ' + color + '"></i>\n\
                             <p class="card-text">Datos Ultimo SOC_In Registrado</p>\n\
@@ -489,8 +555,12 @@ function datos_movilOut() {
                 $("#inpLavSi").removeAttr('readonly');
                 $("#inpLavNo").removeAttr('readonly');
                 $("#inpElectLineOut").removeAttr('readonly');
-//                $("#inpElectLineOut").attr('readonly', 'readonly');
                 $("#inpElectLineOut").val(temp.sin_num_electrolinea);
+                if (temp.sin_num_electrolinea == "" || temp.sin_num_electrolinea == null) {
+
+                } else {
+                    $("#inpElectLineOut").attr('readonly', 'readonly');
+                }
                 $("#inpNumBusOut").val(temp.bus_num_movil);
                 $("#inpObservOut").removeAttr('readonly');
                 $("#sectionDataMovil").html(movil_data);
@@ -527,7 +597,7 @@ function resetFormSocOut() {
  * @returns {undefined}
  */
 function tablaGeneralBusIn() {
-    request = "../controllers/soc_out/consulta_all_bus_in_controller.php";
+    request = "../controllers/soc_in/consulta_all_bus_out_controller.php";
     cadena = "a=1"; //envio de parametros por POST
     metodo = function (datos) {
         arregloBusIn = $.parseJSON(datos);
@@ -538,12 +608,14 @@ function tablaGeneralBusIn() {
                             <div class="card-body">\n\
                                 <div class="table-responsive text-nowrap">\n\
                                     <table class="table table-sm table-striped table-bordered" id="tableIn">\n\
-                                        <thead class="table-success">\n\
+                                        <thead class="table-warning">\n\
                                             <tr>\n\
                                                 <th>IN</th>\n\
                                                 <th>FECHA</th>\n\
                                                 <th>MOVIL</th>\n\
                                                 <th>PLACA</th>\n\
+                                                <th>TIPO</th>\n\
+                                                <th>ELECT.</th>\n\
                                             </tr>\n\
                                         </thead>\n\
                                         <tbody>';
@@ -552,7 +624,9 @@ function tablaGeneralBusIn() {
                 datosBusIn += '<tr id="fila' + i + '"><td><i class="m-r-10 mdi mdi-bus" style="color: #deaa00"></i></td>';
                 datosBusIn += '<td>' + tmp.in_fecha + '</td>';
                 datosBusIn += '<td>' + tmp.bus_num_movil + '</td>';
-                datosBusIn += '<td>' + tmp.bus_placa + '</td></tr>';
+                datosBusIn += '<td>' + tmp.bus_placa + '</td>';
+                datosBusIn += '<td>' + tmp.tip_tipo + '</td>';
+                datosBusIn += '<td>' + tmp.sin_num_electrolinea + '</td></tr>';
             }
             datosBusIn += "</tbody></table>";
             $("#sectionTable").html(datosBusIn);
@@ -587,6 +661,9 @@ function guardar_soc_out() {
         if (datos == 1) {
             alertify.warning('Guardado OK!!');
             resetFormSocOut();
+            $("#inpNumMovilOut").val("");
+            $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+            setTimeout(tablaGeneralBusIn, 650);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');

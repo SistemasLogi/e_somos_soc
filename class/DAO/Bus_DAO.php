@@ -23,10 +23,10 @@ class Bus_DAO {
      */
     function consultaBus_x_movil_in($empresa, $movil) {
         $sql = "SELECT M.* FROM ("
-                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
-                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha < T3.sout_fecha, 1, 0)AS fecha "
+                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
+                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha > T3.sout_fecha, 1, 0)AS fecha "
                 . "FROM "
-                . "(SELECT * FROM bus WHERE em_id = " . $empresa . " AND bus_num_movil = '" . $movil . "')AS T1 "
+                . "(SELECT bus.*, tip.tip_tipo FROM bus AS bus, tipologia AS tip WHERE bus.em_id = " . $empresa . " AND bus.bus_num_movil = '" . $movil . "' AND bus.tip_id = tip.tip_id)AS T1 "
                 . "LEFT JOIN "
                 . "(SELECT b.* FROM soc_in AS b WHERE b.bus_em_id = " . $empresa . " AND b.bus_num_movil = '" . $movil . "' "
                 . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil))AS T2 "
@@ -49,10 +49,10 @@ class Bus_DAO {
      */
     function consultaBus_x_movil_out($empresa, $movil) {
         $sql = "SELECT M.* FROM ("
-                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
-                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha > T3.sout_fecha, 1, 0)AS fecha "
+                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
+                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T3.sout_fecha > T2.sin_fecha, 1, 0)AS fecha "
                 . "FROM "
-                . "(SELECT * FROM bus WHERE em_id = " . $empresa . " AND bus_num_movil = '" . $movil . "')AS T1 "
+                . "(SELECT bus.*, tip.tip_tipo FROM bus AS bus, tipologia AS tip WHERE bus.em_id = " . $empresa . " AND bus.bus_num_movil = '" . $movil . "' AND bus.tip_id = tip.tip_id)AS T1 "
                 . "LEFT JOIN "
                 . "(SELECT b.* FROM soc_in AS b WHERE b.bus_em_id = " . $empresa . " AND b.bus_num_movil = '" . $movil . "' "
                 . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil))AS T2 "
@@ -74,10 +74,10 @@ class Bus_DAO {
      */
     function consultaGeneral_in($empresa) {
         $sql = "SELECT M.* FROM ("
-                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
-                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha < T3.sout_fecha, 1, 0)AS fecha "
+                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
+                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha > T3.sout_fecha, 1, 0)AS fecha "
                 . "FROM "
-                . "(SELECT * FROM bus WHERE em_id = " . $empresa . ")AS T1 "
+                . "(SELECT bus.*, tip.tip_tipo FROM bus AS bus, tipologia AS tip WHERE bus.em_id = " . $empresa . " AND bus.tip_id = tip.tip_id)AS T1 "
                 . "LEFT JOIN "
                 . "(SELECT b.* FROM soc_in AS b WHERE b.bus_em_id = " . $empresa . " "
                 . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil))AS T2 "
@@ -85,7 +85,7 @@ class Bus_DAO {
                 . "LEFT JOIN "
                 . "(SELECT TP.* FROM soc_out AS TP WHERE TP.bus_em_id = " . $empresa . " "
                 . "AND TP.sout_fecha = (SELECT MAX(TS.sout_fecha)FROM soc_out AS TS WHERE TP.bus_num_movil = TS.bus_num_movil))AS T3 "
-                . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE  (M.fecha = 0 || M.out_fecha = 0) AND M.in_fecha <> 0;";
+                . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE (M.fecha = 0 && M.out_fecha <> 0);";
         $BD = new MySQL();
         return $BD->query($sql);
 //        return $sql;
@@ -99,10 +99,10 @@ class Bus_DAO {
      */
     function consultaGeneral_out($empresa) {
         $sql = "SELECT M.* FROM ("
-                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
-                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha > T3.sout_fecha, 1, 0)AS fecha "
+                . "SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
+                . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T3.sout_fecha > T2.sin_fecha, 1, 0)AS fecha "
                 . "FROM "
-                . "(SELECT * FROM bus WHERE em_id = " . $empresa . ")AS T1 "
+                . "(SELECT bus.*, tip.tip_tipo FROM bus AS bus, tipologia AS tip WHERE bus.em_id = " . $empresa . " AND bus.tip_id = tip.tip_id)AS T1 "
                 . "LEFT JOIN "
                 . "(SELECT b.* FROM soc_in AS b WHERE b.bus_em_id = " . $empresa . " "
                 . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil))AS T2 "
@@ -110,7 +110,7 @@ class Bus_DAO {
                 . "LEFT JOIN "
                 . "(SELECT TP.* FROM soc_out AS TP WHERE TP.bus_em_id = " . $empresa . " "
                 . "AND TP.sout_fecha = (SELECT MAX(TS.sout_fecha)FROM soc_out AS TS WHERE TP.bus_num_movil = TS.bus_num_movil))AS T3 "
-                . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE  (M.fecha = 0 || M.in_fecha = 0) AND M.out_fecha <> 0;";
+                . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE (M.fecha = 0 && M.in_fecha <> 0);";
         $BD = new MySQL();
         return $BD->query($sql);
 //        return $sql;
