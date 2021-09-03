@@ -347,6 +347,7 @@ function guardar_soc_in() {
         if (datos == 1) {
             alertify.warning('Guardado OK!!');
             $("#inpNumMovil").val("");
+            $("#sectionDataMovil").html("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
             setTimeout(tablaGeneralBusOut, 450);
             formDatosIngreso();
@@ -640,6 +641,7 @@ function guardar_soc_out() {
             alertify.warning('Guardado OK!!');
             formDatosSalida();
             $("#inpNumMovilOut").val("");
+            $("#sectionDataMovil").html("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
             setTimeout(tablaGeneralBusIn, 650);
         } else {
@@ -668,6 +670,7 @@ function dashTodosBus() {
     f_ajax(request, cadena, metodo);
 }
 
+var arregloBusAll;
 /**
  * Metodo que retorna el listado de ultimo proceso para todos los buses
  * @returns {undefined}
@@ -686,7 +689,7 @@ function tablaGeneralAllBus() {
             datosBusAll = '<div class="card">\n\
                             <h5 class="card-header">Tabla Buses</h5>\n\
                             <div class="card-body">\n\
-                                <div class="table-responsive text-nowrap">\n\
+                                <div class="table-responsive text-nowrap" id="contenTable">\n\
                                     <table class="table table-sm table-striped table-bordered" id="tableAll">\n\
                                         <thead>\n\
                                             <tr>\n\
@@ -726,7 +729,7 @@ function tablaGeneralAllBus() {
                     datosBusAll += '<td><i class="m-r-10 mdi mdi-cup-water" style="color: #5969ff;"></i></td>';
                     busesLavSi++;
                 } else if (tmp.sout_lavado == 'NO') {
-                    datosBusAll += '<td class="link_icon"><i class="m-r-10 mdi mdi-cup-off" style="color: #ff407b;"></i></td>';
+                    datosBusAll += '<td class="link_icon actulav" lav="' + i + '"><i class="m-r-10 mdi mdi-cup-off" style="color: #ff407b;"></i></td>';
                     busesLavNo++;
                 } else {
                     datosBusAll += '<td>Sin datos</td>';
@@ -762,6 +765,8 @@ function tablaGeneralAllBus() {
             $("#unLavSi").html(busesLavSi);
             $("#unLavNo").html(busesLavNo);
 
+            clickActulizarLavado();
+
         } else {
             $("#SectionTableAllBus").html('<div class="card">\n\
                                     <h5 class="card-header">Tabla Buses Out</h5>\n\
@@ -771,6 +776,103 @@ function tablaGeneralAllBus() {
                                         </div>\n\
                                     </div>\n\
                                 </div>');
+        }
+    };
+    f_ajax(request, cadena, metodo);
+}
+/**
+ * Metodo que devuelve el formulario para actualizar el estado
+ * formulario ciudad
+ * @returns {undefined}
+ */
+function clickActulizarLavado() {
+    $("#contenTable").on("click", ".actulav", function () {
+//    $(".actuestos").click(function () {
+        actu_lavado = $(this).attr("lav");
+        $('#ModalGeneral').modal('toggle');
+
+        form_act_lavado(arregloBusAll, actu_lavado);
+    });
+}
+/**
+ * Metodo que llama la ventana emergente con el formulario
+ * @param {type} array
+ * @param {type} position
+ * @returns {undefined}
+ */
+function form_act_lavado(array, position) {
+    tm = array[position];
+
+    $('#ModalGeneralTitle').html('ACTUALIZAR LAVADO');
+    $('#body_modal').html('<div class="card">\n\
+    <h5 class="card-header">MOVIL N° <em>' + tm.bus_num_movil + '</em></h5>\n\
+    <h5 class="card-header">Fecha Registro <em>' + tm.out_fecha + '</em></h5>\n\
+    <div class="card-body">\n\
+        <form id="formActLavado">\n\
+            <div class="form-group row">\n\
+                <div class="col-9 col-lg-8" style="display: none;">\n\
+                    <input id="inpNumBusOut" name="inpNumBusOut" value="' + tm.bus_num_movil + '" type="text">\n\
+                </div>\n\
+                <div class="col-9 col-lg-8" style="display: none;">\n\
+                    <input id="inpFechaOut" name="inpFechaOut" value="' + tm.out_fecha + '" type="text">\n\
+                </div>\n\
+            </div>\n\
+            <div class="form-group row">\n\
+                <label for="inpLavSi" class="col-3 col-lg-4 col-form-label text-right">Lavado</label>\n\
+                <label class="custom-control custom-radio custom-control-inline">\n\
+                    <input type="radio" id="inpLavSi" name="radioLavado" value="SI" checked="" class="custom-control-input is-valid" readonly=""><span class="custom-control-label">SI</span>\n\
+                </label>\n\
+                <label class="custom-control custom-radio custom-control-inline">\n\
+                    <input type="radio" id="inpLavNo" name="radioLavado" value="NO" class="custom-control-input is-invalid" readonly=""><span class="custom-control-label">NO</span>\n\
+                </label>\n\
+            </div>\n\
+            <div class="row justify-content-center">\n\
+                <button type="submit" id="btnGuardarLav" name="btnGuardarLav" class="btn btn-space btn-brand">Guardar</button>\n\
+                <button type="button" id="btnCancelLav" class="btn btn-space btn-secondary">Cancel</button>\n\
+            </div>\n\
+        </form>\n\
+    </div>\n\
+</div>');
+    $("#btnGuardarLav").click(function () {
+        validarGuardarLavado();
+    });
+    $("#btnCancelLav").click(function () {
+        $("#btnCloseModal").trigger("click");
+    });
+}
+/**
+ * Metodo de validacion form actualizar lavado
+ * @returns {undefined}
+ */
+function validarGuardarLavado() {
+    $("#formActLavado").validate({
+        rules: {
+            radioLavado: {
+                required: true
+            }
+        },
+        submitHandler: function (form) {
+            guardar_lavado();
+        }
+    });
+}
+/**
+ * Metodo que guarda registro en tabla soc_out actualizar lavado
+ * @returns {undefined}
+ */
+function guardar_lavado() {
+    request = "../controllers/soc_out/actualiza_lavado_controller.php";
+    cadena = $("#formActLavado").serialize(); //envio de parametros por POST
+    metodo = function (datos) {
+//        alert(datos);
+        if (datos == 1) {
+            $("#btnCloseModal").trigger("click");
+            alertify.warning('Guardado OK!!');
+            $("#SectionTableAllBus").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+            setTimeout(tablaGeneralAllBus, 650);
+        } else {
+//            alert(datos);
+            alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
         }
     };
     f_ajax(request, cadena, metodo);

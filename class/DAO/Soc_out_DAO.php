@@ -27,4 +27,22 @@ class Soc_out_DAO {
         return $BD->execute_query($sql);
     }
 
+    /**
+     * Funcion que actualiza lavado de bus en tabla soc_out
+     * @param type $lavado
+     * @param type $fecha
+     * @param type $empresa
+     * @param type $num_movil
+     * @return type
+     */
+    function actualizarLavOut($lavado, $fecha, $empresa, $num_movil) {
+        $sql = "UPDATE soc_out SET sout_lavado = '" . $lavado . "' "
+                . "WHERE sout_fecha = '" . $fecha . "' "
+                . "AND bus_em_id = " . $empresa . " "
+                . "AND bus_num_movil = '" . $num_movil . "';";
+        $BD = new MySQL();
+//        return $sql;
+        return $BD->execute_query($sql);
+    }
+
 }
