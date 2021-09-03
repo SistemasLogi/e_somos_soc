@@ -10,12 +10,23 @@ $(document).ready(function () {
         $("#sectionDataMovil").html("");
         tablaGeneralBusOut();
         activeMenu("#enlSocIn");
+        $("#sectionDashAllBus").html("");
     });
     $("#enlSocOut").click(function () {
         formBuscarOut();
         $("#sectionDataMovil").html("");
         tablaGeneralBusIn();
         activeMenu("#enlSocOut");
+        $("#sectionDashAllBus").html("");
+    });
+    $("#enlAllBus").click(function () {
+        $("#sectionFormBuscarMovil").html("");
+        $("#sectionFormDatIngreso").html("");
+        $("#sectionDataMovil").html("");
+        $("#sectionTable").html("");
+        activeMenu("#enlAllBus");
+        dashTodosBus();
+        setTimeout(tablaGeneralAllBus, 250);
     });
 
 });
@@ -93,6 +104,9 @@ function formDatosIngreso() {
 
         $("#btnGuardarSocIn").click(function () {
             validarGuardarSocIn(maxkm, minkm);
+        });
+        $("#btnResetFormIn").click(function () {
+            resetFormSocIn();
         });
     };
     f_ajax(request, cadena, metodo);
@@ -239,6 +253,7 @@ function datos_movil() {
                 $("#inpElectLineIn").removeAttr('readonly');
                 $("#inpNumBusIn").val(temp_bus_in.bus_num_movil);
                 $("#sectionDataMovil").html(movil_data);
+                $("#btnGuardarSocIn").removeAttr('disabled');
             } else {
                 alertify.alert('No existe un Bus con este numero en la Base de Datos').setHeader('<em> WARNING! </em> ');
                 resetFormSocIn();
@@ -281,7 +296,7 @@ function tablaGeneralBusOut() {
                                     <table class="table table-sm table-striped table-bordered" id="tableIn">\n\
                                         <thead class="table-success">\n\
                                             <tr>\n\
-                                                <th>IN</th>\n\
+                                                <th>OUT</th>\n\
                                                 <th>FECHA</th>\n\
                                                 <th>MOVIL</th>\n\
                                                 <th>PLACA</th>\n\
@@ -299,7 +314,7 @@ function tablaGeneralBusOut() {
                 datosBusOut += '<td>' + tmp.tip_tipo + '</td>';
                 datosBusOut += '<td>' + tmp.sin_km + '</td></tr>';
             }
-            datosBusOut += "</tbody></table>";
+            datosBusOut += "</tbody></table></div></div></div>";
             $("#sectionTable").html(datosBusOut);
             /**
              * Evento que pagina una tabla 
@@ -331,10 +346,10 @@ function guardar_soc_in() {
 //        alert(datos);
         if (datos == 1) {
             alertify.warning('Guardado OK!!');
-            resetFormSocIn();
             $("#inpNumMovil").val("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
             setTimeout(tablaGeneralBusOut, 450);
+            formDatosIngreso();
         } else {
 //            alert(datos);
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
@@ -381,6 +396,9 @@ function formDatosSalida() {
 
         $("#btnGuardarSocOut").click(function () {
             validarGuardarSocOut();
+        });
+        $("#btnResetOut").click(function () {
+            resetFormSocOut();
         });
     };
     f_ajax(request, cadena, metodo);
@@ -588,7 +606,7 @@ function tablaGeneralBusIn() {
                 datosBusIn += '<td>' + tmp.tip_tipo + '</td>';
                 datosBusIn += '<td>' + tmp.sin_num_electrolinea + '</td></tr>';
             }
-            datosBusIn += "</tbody></table>";
+            datosBusIn += "</tbody></table></div></div></div>";
             $("#sectionTable").html(datosBusIn);
             /**
              * Evento que pagina una tabla 
@@ -620,13 +638,139 @@ function guardar_soc_out() {
 //        alert(datos);
         if (datos == 1) {
             alertify.warning('Guardado OK!!');
-            resetFormSocOut();
+            formDatosSalida();
             $("#inpNumMovilOut").val("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
             setTimeout(tablaGeneralBusIn, 650);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
+        }
+    };
+    f_ajax(request, cadena, metodo);
+}
+/************************/
+/**funciones all_bus**/
+/************************/
+/**
+ * Metodo que carga el dash con la informacion de todos los buses
+ * @returns {undefined}
+ */
+function dashTodosBus() {
+    request = "screens/dashAllBus.php";
+    cadena = "a=1";
+    metodo = function (datos) {
+//        alert(datos);
+        $("#titleDash").html("DashsBoard All Bus");
+        $("#lbfolder").html("ALL BUS");
+        $("#sectionDashAllBus").html(datos);
+    };
+    f_ajax(request, cadena, metodo);
+}
+
+/**
+ * Metodo que retorna el listado de ultimo proceso para todos los buses
+ * @returns {undefined}
+ */
+function tablaGeneralAllBus() {
+    request = "../controllers/bus/consulta_all_bus_controller.php";
+    cadena = "a=1"; //envio de parametros por POST
+    metodo = function (datos) {
+        arregloBusAll = $.parseJSON(datos);
+        /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
+        if (arregloBusAll !== 0) {
+            busesIn = 0;
+            busesOut = 0;
+            busesLavSi = 0;
+            busesLavNo = 0;
+            datosBusAll = '<div class="card">\n\
+                            <h5 class="card-header">Tabla Buses</h5>\n\
+                            <div class="card-body">\n\
+                                <div class="table-responsive text-nowrap">\n\
+                                    <table class="table table-sm table-striped table-bordered" id="tableAll">\n\
+                                        <thead>\n\
+                                            <tr>\n\
+                                                <th>In/Out</th>\n\
+                                                <th>FECHA</th>\n\
+                                                <th class="table-info">MOVIL</th>\n\
+                                                <th class="table-info">PLACA</th>\n\
+                                                <th class="table-info">TIPO</th>\n\
+                                                <th class="table-warning">ELECT.</th>\n\
+                                                <th class="table-warning">SOC In</th>\n\
+                                                <th class="table-warning">KM</th>\n\
+                                                <th class="table-success">LAVADO</th>\n\
+                                                <th class="table-success">SOC Out</th>\n\
+                                                <th class="table-success">KWh</th>\n\
+                                            </tr>\n\
+                                        </thead>\n\
+                                        <tbody>';
+            for (i = 0; i < arregloBusAll.length; i++) {
+                tmp = arregloBusAll[i];
+                datosBusAll += '<tr id="fila' + i + '">';
+                if (tmp.fecha == 1) {
+                    datosBusAll += '<td><i class="m-r-10 mdi mdi-bus" style="color: #2ec551;"></i></td>';
+                    datosBusAll += '<td>' + tmp.out_fecha + '</td>';
+                    busesOut++;
+                } else {
+                    datosBusAll += '<td><i class="m-r-10 mdi mdi-bus" style="color: #deaa00;"></i></td>';
+                    datosBusAll += '<td>' + tmp.in_fecha + '</td>';
+                    busesIn++;
+                }
+                datosBusAll += '<td>' + tmp.bus_num_movil + '</td>';
+                datosBusAll += '<td>' + tmp.bus_placa + '</td>';
+                datosBusAll += '<td>' + tmp.tip_tipo + '</td>';
+                datosBusAll += '<td>' + tmp.sin_num_electrolinea + '</td>';
+                datosBusAll += '<td>' + tmp.sin_in + '</td>';
+                datosBusAll += '<td>' + tmp.sin_km + '</td>';
+                if (tmp.sout_lavado == 'SI') {
+                    datosBusAll += '<td><i class="m-r-10 mdi mdi-cup-water" style="color: #5969ff;"></i></td>';
+                    busesLavSi++;
+                } else if (tmp.sout_lavado == 'NO') {
+                    datosBusAll += '<td class="link_icon"><i class="m-r-10 mdi mdi-cup-off" style="color: #ff407b;"></i></td>';
+                    busesLavNo++;
+                } else {
+                    datosBusAll += '<td>Sin datos</td>';
+                }
+                datosBusAll += '<td>' + tmp.sout_out + '</td>';
+                datosBusAll += '<td>' + tmp.sout_kwh + '</td></tr>';
+            }
+            datosBusAll += '</tbody><tfoot>\n\
+                            <tr>\n\
+                                <th>In/Out</th>\n\
+                                <th>FECHA</th>\n\
+                                <th class="table-info">MOVIL</th>\n\
+                                <th class="table-info">PLACA</th>\n\
+                                <th class="table-info">TIPO</th>\n\
+                                <th class="table-warning">ELECT.</th>\n\
+                                <th class="table-warning">SOC In</th>\n\
+                                <th class="table-warning">KM</th>\n\
+                                <th class="table-success">LAVADO</th>\n\
+                                <th class="table-success">SOC Out</th>\n\
+                                <th class="table-success">KWh</th>\n\
+                            </tr>\n\
+                        </tfoot></table></div></div></div>';
+            $("#SectionTableAllBus").html(datosBusAll);
+            /**
+             * Evento que pagina una tabla 
+             */
+
+            $('#tableAll').DataTable();
+
+
+            $("#unIn").html(busesIn);
+            $("#unOut").html(busesOut);
+            $("#unLavSi").html(busesLavSi);
+            $("#unLavNo").html(busesLavNo);
+
+        } else {
+            $("#SectionTableAllBus").html('<div class="card">\n\
+                                    <h5 class="card-header">Tabla Buses Out</h5>\n\
+                                    <div class="card-body">\n\
+                                        <div class="table-responsive">\n\
+                                            <span>Sin Datos Recientes</span>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>');
         }
     };
     f_ajax(request, cadena, metodo);

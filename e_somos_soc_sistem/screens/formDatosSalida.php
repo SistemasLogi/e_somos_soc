@@ -41,7 +41,7 @@
             </div>
             <div class="row justify-content-center">
                 <button type="submit" id="btnGuardarSocOut" name="btnGuardarSocOut" class="btn btn-space btn-brand">Guardar</button>
-                <button class="btn btn-space btn-secondary">Cancel</button>
+                <button type="button" id="btnResetOut" class="btn btn-space btn-secondary">Cancel</button>
             </div>
         </form>
     </div>

@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <button type="submit" id="btnGuardarSocIn" name="btnGuardarSocIn" class="btn btn-space btn-primary">Guardar</button>
-                <button class="btn btn-space btn-secondary">Cancel</button>
+                <button type="submit" id="btnGuardarSocIn" name="btnGuardarSocIn" class="btn btn-space btn-primary" disabled>Guardar</button>
+                <button type="button" id="btnResetFormIn" class="btn btn-space btn-secondary">Cancel</button>
             </div>
         </form>
     </div>

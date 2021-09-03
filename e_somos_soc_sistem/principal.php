@@ -174,15 +174,13 @@ if (!isset($_SESSION["tecnico"])) {
 
                         </div>
                         <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                <h1>SECCION BAJA</h1>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="sectionDashAllBus">
+                                <!--<h1>SECCION BAJA</h1>-->
                             </div>
                             <!-- ============================================================== -->
                             <!-- end pageheader  -->
                             <!-- ============================================================== -->
-                            <div class="ecommerce-widget">
 
-                            </div>
                         </div>
                     </div>
                     <!-- ============================================================== -->
