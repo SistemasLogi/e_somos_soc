@@ -122,22 +122,23 @@ class Bus_DAO {
      * @return type
      */
     function consultaGeneralAllBus($empresa) {
-        $sql = "SELECT M.* FROM (SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T3.sout_lavado, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
+        $sql = "SELECT M.* FROM (SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T2.rol_id AS in_rol, T2.us_cedula AS in_cedula, T2.us_nombre AS in_nombre, T3.sout_lavado, "
+                . "T3.sout_fecha, T3.sout_kwh, T3.sout_out, T3.rol_id AS out_rol, T3.us_cedula AS out_cedula, T3.us_nombre AS out_nombre, "
                 . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T3.sout_fecha > T2.sin_fecha, 1, 0)AS fecha "
                 . "FROM (SELECT bus.*, tip.tip_tipo FROM bus AS bus, tipologia AS tip WHERE bus.em_id = " . $empresa . " AND bus.tip_id = tip.tip_id)AS T1 "
-                . "LEFT JOIN (SELECT b.* FROM soc_in AS b WHERE b.bus_em_id = " . $empresa . " "
-                . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil))AS T2 "
-                . "ON T1.bus_num_movil = T2.bus_num_movil LEFT JOIN (SELECT TP.* FROM soc_out AS TP WHERE TP.bus_em_id = " . $empresa . " "
-                . "AND TP.sout_fecha = (SELECT MAX(TS.sout_fecha)FROM soc_out AS TS WHERE TP.bus_num_movil = TS.bus_num_movil))AS T3 "
-                . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE (M.fecha = 0 && M.in_fecha <> 0)"
-                . "UNION "
-                . "SELECT M.* FROM (SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T3.sout_lavado, T3.sout_fecha, T3.sout_kwh, T3.sout_out, "
+                . "LEFT JOIN (SELECT b.*, u.rol_id, u.us_cedula, u.us_nombre FROM soc_in AS b, usuario AS u WHERE b.bus_em_id = " . $empresa . " "
+                . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil) AND b.us_id = u.us_id)AS T2 "
+                . "ON T1.bus_num_movil = T2.bus_num_movil LEFT JOIN (SELECT TP.*, TU.rol_id, TU.us_cedula, TU.us_nombre FROM soc_out AS TP, usuario AS TU WHERE TP.bus_em_id = " . $empresa . " "
+                . "AND TP.sout_fecha = (SELECT MAX(TS.sout_fecha)FROM soc_out AS TS WHERE TP.bus_num_movil = TS.bus_num_movil) AND TP.us_id = TU.us_id)AS T3 "
+                . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE (M.fecha = 0 && M.in_fecha <> 0) "
+                . "UNION SELECT M.* FROM (SELECT T1.*, T2.sin_fecha, T2.sin_km, T2.sin_in, T2.sin_num_electrolinea, T2.rol_id AS in_rol, T2.us_cedula AS in_cedula, T2.us_nombre AS in_nombre, T3.sout_lavado, "
+                . "T3.sout_fecha, T3.sout_kwh, T3.sout_out, T3.rol_id AS out_rol, T3.us_cedula AS out_cedula, T3.us_nombre AS out_nombre, "
                 . "IFNULL(T2.sin_fecha,0)AS in_fecha, IFNULL(T3.sout_fecha,0)AS out_fecha, IF(T2.sin_fecha > T3.sout_fecha, 0, 1)AS fecha "
                 . "FROM (SELECT bus.*, tip.tip_tipo FROM bus AS bus, tipologia AS tip WHERE bus.em_id = " . $empresa . " AND bus.tip_id = tip.tip_id)AS T1 "
-                . "LEFT JOIN (SELECT b.* FROM soc_in AS b WHERE b.bus_em_id = " . $empresa . " "
-                . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil))AS T2 "
-                . "ON T1.bus_num_movil = T2.bus_num_movil LEFT JOIN (SELECT TP.* FROM soc_out AS TP WHERE TP.bus_em_id = " . $empresa . " "
-                . "AND TP.sout_fecha = (SELECT MAX(TS.sout_fecha)FROM soc_out AS TS WHERE TP.bus_num_movil = TS.bus_num_movil))AS T3 "
+                . "LEFT JOIN (SELECT b.*, u.rol_id, u.us_cedula, u.us_nombre FROM soc_in AS b, usuario AS u WHERE b.bus_em_id = " . $empresa . " "
+                . "AND b.sin_fecha = (SELECT MAX(bs.sin_fecha)FROM soc_in AS bs WHERE b.bus_num_movil = bs.bus_num_movil) AND b.us_id = u.us_id)AS T2 "
+                . "ON T1.bus_num_movil = T2.bus_num_movil LEFT JOIN (SELECT TP.*, TU.rol_id, TU.us_cedula, TU.us_nombre FROM soc_out AS TP, usuario AS TU WHERE TP.bus_em_id = " . $empresa . " "
+                . "AND TP.sout_fecha = (SELECT MAX(TS.sout_fecha)FROM soc_out AS TS WHERE TP.bus_num_movil = TS.bus_num_movil) AND TP.us_id = TU.us_id)AS T3 "
                 . "ON T1.bus_num_movil = T3.bus_num_movil)AS M WHERE (M.fecha = 1 && M.out_fecha <> 0);";
         $BD = new MySQL();
         return $BD->query($sql);

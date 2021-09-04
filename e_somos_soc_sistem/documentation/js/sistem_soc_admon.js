@@ -28,6 +28,18 @@ $(document).ready(function () {
         dashTodosBus();
         setTimeout(tablaGeneralAllBus, 250);
     });
+    $("#enlAdmon").click(function () {
+        $("#subEnlNewUser").click(function (){
+            formNuevoUsuario();
+        });
+        $("#sectionFormBuscarMovil").html("");
+        $("#sectionFormDatIngreso").html("");
+        $("#sectionDataMovil").html("");
+        $("#sectionTable").html("");
+        activeMenu("#enlAdmon");
+        
+//        setTimeout(tablaGeneralAllBus, 250);
+    });
     setInterval(sessio_refresh, 165000);
 });
 /**
@@ -722,9 +734,11 @@ function tablaGeneralAllBus() {
                                                 <th class="table-warning">ELECT.</th>\n\
                                                 <th class="table-warning">SOC In</th>\n\
                                                 <th class="table-warning">KM</th>\n\
+                                                <th class="table-warning">USUARIO In</th>\n\
                                                 <th class="table-success">LAVADO</th>\n\
                                                 <th class="table-success">SOC Out</th>\n\
                                                 <th class="table-success">KWh</th>\n\
+                                                <th class="table-success">USUARIO Out</th>\n\
                                             </tr>\n\
                                         </thead>\n\
                                         <tbody>';
@@ -746,6 +760,7 @@ function tablaGeneralAllBus() {
                 datosBusAll += '<td>' + tmp.sin_num_electrolinea + '</td>';
                 datosBusAll += '<td>' + tmp.sin_in + '</td>';
                 datosBusAll += '<td>' + tmp.sin_km + '</td>';
+                datosBusAll += '<td>' + tmp.in_nombre + '</td>';
                 if (tmp.sout_lavado == 'SI') {
                     datosBusAll += '<td><i class="m-r-10 mdi mdi-cup-water" style="color: #5969ff;"></i></td>';
                     busesLavSi++;
@@ -762,7 +777,8 @@ function tablaGeneralAllBus() {
                     datosBusAll += '<td>Sin datos</td>';
                 }
                 datosBusAll += '<td>' + tmp.sout_out + '</td>';
-                datosBusAll += '<td>' + tmp.sout_kwh + '</td></tr>';
+                datosBusAll += '<td>' + tmp.sout_kwh + '</td>';
+                datosBusAll += '<td>' + tmp.out_nombre + '</td></tr>';
             }
             datosBusAll += '</tbody><tfoot>\n\
                             <tr>\n\
@@ -774,9 +790,11 @@ function tablaGeneralAllBus() {
                                 <th class="table-warning">ELECT.</th>\n\
                                 <th class="table-warning">SOC In</th>\n\
                                 <th class="table-warning">KM</th>\n\
+                                <th class="table-warning">USUARIO In</th>\n\
                                 <th class="table-success">LAVADO</th>\n\
                                 <th class="table-success">SOC Out</th>\n\
                                 <th class="table-success">KWh</th>\n\
+                                <th class="table-success">USUARIO Out</th>\n\
                             </tr>\n\
                         </tfoot></table></div></div></div>';
             $("#SectionTableAllBus").html(datosBusAll);
@@ -901,6 +919,24 @@ function guardar_lavado() {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
         }
+    };
+    f_ajax(request, cadena, metodo);
+}
+/************************/
+/**funciones Administrar**/
+/************************/
+/**
+ * Metodo que carga el formulario de registro de nuevo usuario
+ * @returns {undefined}
+ */
+function formNuevoUsuario() {
+    request = "screens/formNuevoUsuario.php";
+    cadena = "a=1";
+    metodo = function (datos) {
+//        alert(datos);
+        $("#titleDash").html("Registrar Nuevo Usuario");
+        $("#lbfolder").html("ADMINISTRAR");
+        $("#sectionDashAllBus").html(datos);
     };
     f_ajax(request, cadena, metodo);
 }

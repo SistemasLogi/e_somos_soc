@@ -1,7 +1,7 @@
 <!doctype html>
 <?php
 session_start();
-if (!isset($_SESSION["tecnico"])) {
+if (!isset($_SESSION["admon"])) {
     header("location:../index.php");
 }
 ?>
@@ -51,27 +51,27 @@ if (!isset($_SESSION["tecnico"])) {
                                     <h5><?php echo $_SESSION["us_nombre"] ?></h5>
                                 </div>
                             </li>                            
-<!--                            <li class="nav-item dropdown connection">
-                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
-                                <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
-                                    <li class="connection-list">
-                                        <div class="row">
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
-                                                <a href="#" class="connection-item"><img src="assets/images/github.png" alt="" > <span>SOC In</span></a>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
-                                                <a href="#" class="connection-item"><img src="assets/images/dribbble.png" alt="" > <span>SOC Out</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>-->
+                            <!--                            <li class="nav-item dropdown connection">
+                                                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
+                                                            <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
+                                                                <li class="connection-list">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
+                                                                            <a href="#" class="connection-item"><img src="assets/images/github.png" alt="" > <span>SOC In</span></a>
+                                                                        </div>
+                                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
+                                                                            <a href="#" class="connection-item"><img src="assets/images/dribbble.png" alt="" > <span>SOC Out</span></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>-->
                             <li class="nav-item dropdown nav-user">
                                 <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
                                 <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                     <div class="nav-user-info">
                                         <h5 class="mb-0 text-white nav-user-name"><?php echo $_SESSION["us_nombre"] ?></h5>
-                                        <span class="status"></span><span class="ml-2">Técnico</span>
+                                        <span class="status"></span><span class="ml-2">Administrador</span>
                                     </div>
                                     <!--<a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Ajustes</a>-->
                                     <a class="dropdown-item" href="../controllers/login/logout_controller.php"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión</a>
@@ -102,7 +102,18 @@ if (!isset($_SESSION["tecnico"])) {
                                 <li class="nav-item " id="elmMenu">
                                     <a class="nav-link link_icon" id="enlSocIn"><i class="fas fa-battery-quarter"></i>SOC IN<span class="badge badge-success"></span></a>
                                     <a class="nav-link link_icon" id="enlSocOut"><i class="fas fa-battery-full"></i>SOC OUT<span class="badge badge-success"></span></a>                                    
-                                    <a class="nav-link link_icon" id="enlAllBus"><i class="fas fa-bus"></i>ALL BUS<span class="badge badge-success"></span></a>                                    
+                                    <a class="nav-link link_icon" id="enlAllBus"><i class="fas fa-bus"></i>ALL BUS<span class="badge badge-success"></span></a>
+                                    <a class="nav-link" href="#" id="enlAdmon" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-user-secret"></i>ADMINISTRAR</a>
+                                    <div id="submenu-2" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link link_icon" id="subEnlNewUser">Nuevo Usuario</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link link_icon" id="subEnlUpdUser">Modificar usuario</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     <a class="nav-link" href="../controllers/login/logout_controller.php"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión<span class="badge badge-success"></span></a>                                    
                                 </li>
                             </ul>
@@ -150,7 +161,7 @@ if (!isset($_SESSION["tecnico"])) {
                             <!-- ============================================================== -->
                             <!-- horizontal form -->
                             <!-- ============================================================== -->
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12" id="sectionFormDatIngreso">
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12" id="sectionFormDatIngreso">                           
 
                             </div>
                             <!-- ============================================================== -->
@@ -176,8 +187,9 @@ if (!isset($_SESSION["tecnico"])) {
                         </div>
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="sectionDashAllBus">
-                                <!--<h1>SECCION BAJA</h1>-->
-                            </div>
+                                <!--<h1>SECCION BAJA</h1>-->                            
+
+                            </div>  
                             <!-- ============================================================== -->
                             <!-- end pageheader  -->
                             <!-- ============================================================== -->
@@ -234,7 +246,7 @@ if (!isset($_SESSION["tecnico"])) {
             <script src="documentation/js/additional-methods.js" type="text/javascript"></script>
             <script src="documentation/js/localization/messages_es.js" type="text/javascript"></script>       
             <script src="documentation/js/alertify.js" type="text/javascript"></script>
-            <script src="documentation/js/sistem_soc.js" type="text/javascript"></script>
+            <script src="documentation/js/sistem_soc_admon.js" type="text/javascript"></script>
             <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
             <script src="assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
             <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
