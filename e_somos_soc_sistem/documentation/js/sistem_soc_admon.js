@@ -29,15 +29,25 @@ $(document).ready(function () {
         setTimeout(tablaGeneralAllBus, 250);
     });
     $("#enlAdmon").click(function () {
-        $("#subEnlNewUser").click(function (){
+        $("#subEnlNewUser").click(function () {
             formNuevoUsuario();
+            $("#sectionFormBuscarMovil").html("");
+            $("#sectionFormDatIngreso").html("");
+            $("#sectionDataMovil").html("");
+            $("#sectionTable").html("");
         });
-        $("#sectionFormBuscarMovil").html("");
-        $("#sectionFormDatIngreso").html("");
-        $("#sectionDataMovil").html("");
-        $("#sectionTable").html("");
         activeMenu("#enlAdmon");
-        
+    });
+    $("#enlReport").click(function () {
+        $("#subEnlCargaFlota").click(function () {
+            reporte_control_carga();
+            $("#sectionFormBuscarMovil").html("");
+            $("#sectionFormDatIngreso").html("");
+            $("#sectionDataMovil").html("");
+            $("#sectionTable").html("");
+        });
+        activeMenu("#enlReport");
+
 //        setTimeout(tablaGeneralAllBus, 250);
     });
     setInterval(sessio_refresh, 165000);
@@ -156,7 +166,7 @@ function validarBuscarMovil() {
     });
 }
 /**
- * Metodo de validacion formsoc in
+ * Metodo de validacion form soc in
  * @param {type} maxkm
  * @param {type} minkm
  * @returns {undefined}
@@ -922,9 +932,9 @@ function guardar_lavado() {
     };
     f_ajax(request, cadena, metodo);
 }
-/************************/
-/**funciones Administrar**/
-/************************/
+/**********************************/
+/**funciones Administrar Usuarios**/
+/**********************************/
 /**
  * Metodo que carga el formulario de registro de nuevo usuario
  * @returns {undefined}
@@ -937,6 +947,259 @@ function formNuevoUsuario() {
         $("#titleDash").html("Registrar Nuevo Usuario");
         $("#lbfolder").html("ADMINISTRAR");
         $("#sectionDashAllBus").html(datos);
+        $("#titleFormUser").html('Nuevo Usuario');
+        $("#guardaUser").click(function () {
+            validarGuardarUsuario();
+        });
+        $("#cancelUser").click(function () {
+            resetFormUser();
+        });
+        $("#sectionTableAllUser").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+        setTimeout(tablaGeneralAllUser, 350);
+    };
+    f_ajax(request, cadena, metodo);
+}
+/**
+ * Metodo de validacion form nuevo usuario
+ * @returns {undefined}
+ */
+function validarGuardarUsuario() {
+    $("#formNuevoUsuario").validate({
+        rules: {
+            inpNameUser: {
+                required: true
+            },
+            inpCedula: {
+                required: true
+            }
+        },
+        submitHandler: function (form) {
+            guardar_usuario();
+        }
+    });
+}
+/**
+ * Metodo que guarda registro en tabla usuario
+ * @returns {undefined}
+ */
+function guardar_usuario() {
+    request = "../controllers/usuario/guardar_usuario_controller.php";
+    cadena = $("#formNuevoUsuario").serialize(); //envio de parametros por POST
+    metodo = function (datos) {
+//        alert(datos);
+        if (datos == 1) {
+            alertify.warning('Guardado OK!!');
+            resetFormUser();
+            $("#sectionTableAllUser").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+            setTimeout(tablaGeneralAllUser, 235);
+        } else {
+//            alert(datos);
+            alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
+        }
+    };
+    f_ajax(request, cadena, metodo);
+}
+
+var arregloUserAll;
+/**
+ * Metodo que retorna el listado de todos los usuarios
+ * @returns {undefined}
+ */
+function tablaGeneralAllUser() {
+    request = "../controllers/usuario/consultar_all_user_controller.php";
+    cadena = "a=1"; //envio de parametros por POST
+    metodo = function (datos) {
+        arregloUserAll = $.parseJSON(datos);
+        /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
+        if (arregloUserAll !== 0) {
+            datosUserAll = '<div class="card">\n\
+                            <h5 class="card-header">Tabla Usuarios</h5>\n\
+                            <div class="card-body">\n\
+                                <div class="table-responsive text-nowrap" id="contenTableUser">\n\
+                                    <table class="table table-sm table-striped table-bordered" id="tableAllUser">\n\
+                                        <thead>\n\
+                                            <tr class="bg-info">\n\
+                                                <th>Ed</th>\n\
+                                                <th>NOMBRE</th>\n\
+                                                <th>CEDULA</th>\n\
+                                                <th>T. USUARIO</th>\n\
+                                            </tr>\n\
+                                        </thead>\n\
+                                        <tbody>';
+            for (i = 0; i < arregloUserAll.length; i++) {
+                tmp = arregloUserAll[i];
+                datosUserAll += '<tr id="fila' + i + '">';
+                datosUserAll += '<td class="link_icon actu_usu" usu="' + i + '"><i class="m-r-10 mdi mdi-account-edit" style="color: #007bff;"></i></td>';
+                datosUserAll += '<td>' + tmp.us_nombre + '</td>';
+                datosUserAll += '<td>' + tmp.us_cedula + '</td>';
+                datosUserAll += '<td>' + tmp.rol_desc + '</td></tr>';
+            }
+            datosUserAll += '</tbody></table></div></div></div>';
+            $("#sectionTableAllUser").html(datosUserAll);
+            /**
+             * Evento que pagina una tabla 
+             */
+
+            $('#tableAllUser').DataTable();
+
+            clickActulizarUsuario();
+
+        } else {
+            $("#sectionTableAllUser").html('<div class="card">\n\
+                                    <h5 class="card-header">Tabla Usuarios</h5>\n\
+                                    <div class="card-body">\n\
+                                        <div class="table-responsive">\n\
+                                            <span>Sin Datos Recientes</span>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>');
+        }
+    };
+    f_ajax(request, cadena, metodo);
+}
+
+/**
+ * Metodo que devuelve el formulario para actualizar el estado
+ * formulario ciudad
+ * @returns {undefined}
+ */
+function clickActulizarUsuario() {
+    $("#contenTableUser").on("click", ".actu_usu", function () {
+//    $(".actu_usu").click(function () {
+        actu_usuario = $(this).attr("usu");
+
+        tm = arregloUserAll[actu_usuario];
+
+        $("#titleDash").html("Actualizar Datos de Usuario");
+        $("#titleFormUser").html('Editar Usuario');
+        $("#inpIdUser").val(tm.us_id);
+        $("#inpNameUser").val(tm.us_nombre);
+        $("#inpCedula").val(tm.us_cedula);
+        $("#guardaUser").html('Actualizar');
+        $("#guardaUser").removeClass('btn-primary');
+        $("#guardaUser").addClass('btn-warning');
+        $("#selRole option").removeAttr('selected');
+        $('#selRole option[value="' + tm.rol_id + '"]').attr('selected', 'selected');
+
+    });
+}
+/**
+ * Metodo que resetea el formulario de usuarios
+ * @returns {undefined}
+ */
+function resetFormUser() {
+    $("#titleDash").html("Registrar Nuevo Usuario");
+    $("#titleFormUser").html('Nuevo Usuario');
+    $("#inpIdUser").val("");
+    $("#inpNameUser").val("");
+    $("#inpCedula").val("");
+    $("#guardaUser").html('Guardar Usuario');
+    $("#guardaUser").removeClass('btn-warning');
+    $("#guardaUser").addClass('btn-primary');
+    $("#selRole option").removeAttr('selected');
+}
+/**********************************/
+/**funciones Reportes**/
+/**********************************/
+/**
+ * Metodo que carga la vista del reporte de control de carga
+ * @returns {undefined}
+ */
+function reporte_control_carga() {
+    request = "screens/reportControlCarga.php";
+    cadena = "a=1";
+    metodo = function (datos) {
+//        alert(datos);
+        $("#titleDash").html("Reporte Control de Carga");
+        $("#lbfolder").html("REPORTES");
+        $("#sectionDashAllBus").html(datos);
+//        $("#guardaUser").click(function () {
+//            validarGuardarUsuario();
+//        });
+        $("#sectionTableAllUser").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+        setTimeout(tablaGeneralAllUser, 350);
+    };
+    f_ajax(request, cadena, metodo);
+}
+/**
+ * Metodo que retorna el listado de control de carga
+ * @returns {undefined}
+ */
+function tablaReporteControlCarga() {
+    request = "../controllers/bus/consulta_control_carga_controller.php";
+    cadena = "a=1"; //envio de parametros por POST
+    metodo = function (datos) {
+        arregloBusCarga = $.parseJSON(datos);
+        /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
+        if (arregloBusCarga !== 0) {
+            datosBusCarga = '<div class="card">\n\
+                            <h5 class="card-header">Tabla Buses</h5>\n\
+                            <div class="card-body">\n\
+                                <div class="table-responsive text-nowrap" id="contenTable">\n\
+                                    <table class="table table-sm table-striped table-bordered" id="tableAll">\n\
+                                        <thead>\n\
+                                            <tr>\n\
+                                                <th>FECHA SOC_Out</th>\n\
+                                                <th class="table-info">MOVIL</th>\n\
+                                                <th class="table-info">PLACA</th>\n\
+                                                <th class="table-info">TIPO</th>\n\
+                                                <th class="table-warning">ÚLTIMO Km_ODO</th>\n\
+                                                <th class="table-warning">Km RECORRIDO</th>\n\
+                                                <th class="table-warning">SOC_In</th>\n\
+                                                <th class="table-success">SOC Out</th>\n\
+                                                <th class="table-success">KWh</th>\n\
+                                                <th class="table-success">RENDIMIENTO</th>\n\
+                                                <th class="table-success">LAVADO</th>\n\
+                                            </tr>\n\
+                                        </thead>\n\
+                                        <tbody>';
+            for (i = 0; i < arregloBusCarga.length; i++) {
+                tmp = arregloBusCarga[i];
+                datosBusCarga += '<tr id="fila' + i + '">';
+                datosBusCarga += '<td>' + tmp.out_fecha + '</td>';
+                datosBusCarga += '<td>' + tmp.bus_num_movil + '</td>';
+                datosBusCarga += '<td>' + tmp.bus_placa + '</td>';
+                datosBusCarga += '<td>' + tmp.tip_tipo + '</td>';
+                datosBusCarga += '<td>' + tmp.ult_km + '</td>';
+                datosBusCarga += '<td>' + tmp.prev_soc_in + '</td>';
+                datosBusCarga += '<td>' + tmp.sout_out + '</td>';
+                datosBusCarga += '<td>' + tmp.sout_kwh + '</td>';
+                datosBusCarga += '<td>' + tmp.out_nombre + '</td></tr>';
+            }
+            datosBusCarga += '</tbody><tfoot>\n\
+                            <tr>\n\
+                                <th>In/Out</th>\n\
+                                <th>FECHA</th>\n\
+                                <th class="table-info">MOVIL</th>\n\
+                                <th class="table-info">PLACA</th>\n\
+                                <th class="table-info">TIPO</th>\n\
+                                <th class="table-warning">ELECT.</th>\n\
+                                <th class="table-warning">SOC In</th>\n\
+                                <th class="table-warning">KM</th>\n\
+                                <th class="table-warning">USUARIO In</th>\n\
+                                <th class="table-success">LAVADO</th>\n\
+                                <th class="table-success">SOC Out</th>\n\
+                                <th class="table-success">KWh</th>\n\
+                                <th class="table-success">USUARIO Out</th>\n\
+                            </tr>\n\
+                        </tfoot></table></div></div></div>';
+            $("#SectionTableXlsx").html(datosBusCarga);
+            /**
+             * Evento que pagina una tabla 
+             */
+
+            $('#tableAll').DataTable();
+
+        } else {
+            $("#SectionTableXlsx").html('<div class="card">\n\
+                                    <h5 class="card-header">Tabla Buses Out</h5>\n\
+                                    <div class="card-body">\n\
+                                        <div class="table-responsive">\n\
+                                            <span>Sin Datos Recientes</span>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>');
+        }
     };
     f_ajax(request, cadena, metodo);
 }

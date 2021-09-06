@@ -49,4 +49,32 @@ class Usuario_DAO {
         return $BD->query($sql);
     }
 
+    /**
+     * Funcion que guarda un usurio
+     * @param type $user_vo
+     * @return type
+     */
+    function guardar_us_new($user_vo) {
+        $sql = "INSERT INTO usuario VALUES (" . $user_vo->getUs_id() . ", " . $user_vo->getRol_id() . ", " . $user_vo->getUs_cedula() . ", "
+                . "'" . $user_vo->getUs_nombre() . "', " . $user_vo->getEm_id() . ", "
+                . "'" . $user_vo->getUs_usuario() . "', '" . $user_vo->getUs_password() . "')"
+                . "ON DUPLICATE KEY UPDATE rol_id = " . $user_vo->getRol_id() . ", us_cedula = " . $user_vo->getUs_cedula() . ", "
+                . "us_nombre = '" . $user_vo->getUs_nombre() . "';";
+        $BD = new MySQL();
+        return $BD->execute_query($sql);
+    }
+
+    /**
+     * Funcion que retorna los datos de todos los usuarios vinculados a una empresa
+     * @param type $empresa
+     * @return type
+     */
+    function consultaUsuarios_empresa($empresa) {
+        $sql = "SELECT u.us_id, u.rol_id, u.us_cedula, u.us_nombre, r.rol_desc "
+                . "FROM usuario AS u, roles AS r "
+                . "WHERE u.rol_id = r.rol_id AND u.em_id = " . $empresa . ";";
+        $BD = new MySQL();
+        return $BD->query($sql);
+    }
+
 }

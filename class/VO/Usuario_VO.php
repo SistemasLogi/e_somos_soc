@@ -12,17 +12,23 @@
  * @author TECNOLOGIA-LOGI
  */
 class Usuario_VO {
+
     //put your code here
-    
+
     private $us_id;
+    private $rol_id;
     private $us_cedula;
     private $us_nombre;
     private $em_id;
     private $us_usuario;
     private $us_password;
-    
+
     public function getUs_id() {
         return $this->us_id;
+    }
+
+    public function getRol_id() {
+        return $this->rol_id;
     }
 
     public function getUs_cedula() {
@@ -47,6 +53,10 @@ class Usuario_VO {
 
     public function setUs_id($us_id) {
         $this->us_id = $us_id;
+    }
+
+    public function setRol_id($rol_id) {
+        $this->rol_id = $rol_id;
     }
 
     public function setUs_cedula($us_cedula) {
