@@ -6,8 +6,8 @@
                 El dato de lavado esta sujeto al último SOC_OUT registrado.</p>
         </div>
     </div>
-    <button class="btn btn-success btn-sm"><i class="fa fa-fw fa-file-excel"></i>Descargar excel</button>
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="SectionTableXlsx">
+    <button type="button" class="btn btn-success btn-sm" id="btnReportCargaXlsx" name="btnReportCargaXlsx"><i class="fa fa-fw fa-file-excel"></i>Descargar excel</button>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3" id="SectionTableXlsx">
 
     </div>    
 </div>

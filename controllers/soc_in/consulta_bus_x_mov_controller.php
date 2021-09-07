@@ -29,7 +29,7 @@ if ($_POST) {
         } else {
             echo 3; //bus no existe en la base de datos
         }
-        echo $datos_bus;
+//        echo $datos_bus;
     } else {
         $movil = "Z66-" . $num_movil; //serial e_somos fontibon
         $datos_bus = json_encode($bus_dao->consultaBus_x_movil_out($_SESSION["empresa"], $movil));

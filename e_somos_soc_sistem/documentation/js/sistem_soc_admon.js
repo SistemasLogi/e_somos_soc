@@ -1113,11 +1113,11 @@ function reporte_control_carga() {
         $("#titleDash").html("Reporte Control de Carga");
         $("#lbfolder").html("REPORTES");
         $("#sectionDashAllBus").html(datos);
-//        $("#guardaUser").click(function () {
-//            validarGuardarUsuario();
-//        });
-        $("#sectionTableAllUser").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-        setTimeout(tablaGeneralAllUser, 350);
+        $("#btnReportCargaXlsx").click(function () {
+            reporte_carga_Xlsx();
+        });
+        $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+        setTimeout(tablaReporteControlCarga, 350);
     };
     f_ajax(request, cadena, metodo);
 }
@@ -1136,7 +1136,7 @@ function tablaReporteControlCarga() {
                             <h5 class="card-header">Tabla Buses</h5>\n\
                             <div class="card-body">\n\
                                 <div class="table-responsive text-nowrap" id="contenTable">\n\
-                                    <table class="table table-sm table-striped table-bordered" id="tableAll">\n\
+                                    <table class="table table-sm table-striped table-bordered" id="tableAllCarga">\n\
                                         <thead>\n\
                                             <tr>\n\
                                                 <th>FECHA SOC_Out</th>\n\
@@ -1160,27 +1160,43 @@ function tablaReporteControlCarga() {
                 datosBusCarga += '<td>' + tmp.bus_num_movil + '</td>';
                 datosBusCarga += '<td>' + tmp.bus_placa + '</td>';
                 datosBusCarga += '<td>' + tmp.tip_tipo + '</td>';
-                datosBusCarga += '<td>' + tmp.ult_km + '</td>';
-                datosBusCarga += '<td>' + tmp.prev_soc_in + '</td>';
+                if (tmp.fecha == 1) {
+                    datosBusCarga += '<td>' + tmp.prev_km_in + '</td>';
+                } else {
+                    datosBusCarga += '<td>' + tmp.sin_km + '</td>';
+                }
+                datosBusCarga += '<td>' + tmp.ult_km_rec + '</td>';
+                if (tmp.fecha == 1) {
+                    datosBusCarga += '<td>' + tmp.sin_in + '</td>';
+                } else {
+                    datosBusCarga += '<td>' + tmp.prev_soc_in + '</td>';
+                }
                 datosBusCarga += '<td>' + tmp.sout_out + '</td>';
                 datosBusCarga += '<td>' + tmp.sout_kwh + '</td>';
-                datosBusCarga += '<td>' + tmp.out_nombre + '</td></tr>';
+                datosBusCarga += '<td>' + tmp.rendimiento + '</td>';
+                if(tmp.sout_lavado == 'SI'){
+                    datosBusCarga += '<td class="table-info">' + tmp.sout_lavado + '</td></tr>';
+                }else if (tmp.sout_lavado == 'NO') {
+                    datosBusCarga += '<td class="table-danger">' + tmp.sout_lavado + '</td></tr>';
+                }else{
+                    datosBusCarga += '<td>' + tmp.sout_lavado + '</td></tr>';
+                }
+
+                
             }
             datosBusCarga += '</tbody><tfoot>\n\
                             <tr>\n\
-                                <th>In/Out</th>\n\
-                                <th>FECHA</th>\n\
+                                <th>FECHA SOC_Out</th>\n\
                                 <th class="table-info">MOVIL</th>\n\
                                 <th class="table-info">PLACA</th>\n\
                                 <th class="table-info">TIPO</th>\n\
-                                <th class="table-warning">ELECT.</th>\n\
-                                <th class="table-warning">SOC In</th>\n\
-                                <th class="table-warning">KM</th>\n\
-                                <th class="table-warning">USUARIO In</th>\n\
-                                <th class="table-success">LAVADO</th>\n\
+                                <th class="table-warning">ÚLTIMO Km_ODO</th>\n\
+                                <th class="table-warning">Km RECORRIDO</th>\n\
+                                <th class="table-warning">SOC_In</th>\n\
                                 <th class="table-success">SOC Out</th>\n\
                                 <th class="table-success">KWh</th>\n\
-                                <th class="table-success">USUARIO Out</th>\n\
+                                <th class="table-success">RENDIMIENTO</th>\n\
+                                <th class="table-success">LAVADO</th>\n\
                             </tr>\n\
                         </tfoot></table></div></div></div>';
             $("#SectionTableXlsx").html(datosBusCarga);
@@ -1188,7 +1204,7 @@ function tablaReporteControlCarga() {
              * Evento que pagina una tabla 
              */
 
-            $('#tableAll').DataTable();
+            $('#tableAllCarga').DataTable();
 
         } else {
             $("#SectionTableXlsx").html('<div class="card">\n\
@@ -1202,4 +1218,34 @@ function tablaReporteControlCarga() {
         }
     };
     f_ajax(request, cadena, metodo);
+}
+/**
+ * Metodo que genera un reporte en excel .xlsx de carga y rendimiento
+ * segun cliente y sucursal seleccionados
+ * @returns {reporte_sock_Xls}
+ */
+function reporte_carga_Xlsx() {
+//    alert(num_suc);
+    request = "../controllers/bus/report_carga_xlsx_controller.php";
+    cadena = "a=1" ; //envio de parametros por POST
+    metodo = function (datos) {
+        rutaXLS_guardado(datos);
+    };
+    f_ajax(request, cadena, metodo);
+}
+
+/**
+ * Metodo que proporciona la ruta y el nombre del archivo xls para descargar
+ * @param {type} clienteReport
+ * @returns {undefined}
+ */
+function rutaXLS_guardado(clienteReport) {
+    if (clienteReport == 1) {
+        alertify.alert('Reporte no generado, error al generar el reporte').setHeader('<em> Cuidado! </em> ');
+    } else {
+        $(location).attr('href', '../files/' + $.trim(clienteReport) + '.xlsx');
+
+        alertify.warning('Reporte Generado!!!');
+    }
+
 }
