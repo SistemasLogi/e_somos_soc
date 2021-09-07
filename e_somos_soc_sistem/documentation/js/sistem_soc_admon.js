@@ -36,6 +36,13 @@ $(document).ready(function () {
             $("#sectionDataMovil").html("");
             $("#sectionTable").html("");
         });
+        $("#subEnlUpdUser").click(function () {
+            formSubidaMasivaBuses();
+            $("#sectionFormBuscarMovil").html("");
+            $("#sectionFormDatIngreso").html("");
+            $("#sectionDataMovil").html("");
+            $("#sectionTable").html("");
+        });
         activeMenu("#enlAdmon");
     });
     $("#enlReport").click(function () {
@@ -85,7 +92,50 @@ function f_ajax(request, cadena, metodo) {
         }
     });
 }
-
+/**
+ * Metodo Ajax para subida de ficheros
+ * @param {type} request
+ * @param {type} cadena
+ * @param {type} metodo
+ * @returns {f_ajax_files}
+ */
+function f_ajax_files(request, cadena, metodo) {
+    this.efe_aja = $.ajax({
+        url: request,
+        cache: false,
+        beforeSend: function () { /*httpR es la variable global donde guardamos la conexion*/
+            $(document).ajaxStop();
+            $(document).ajaxStart();
+        },
+        type: "POST",
+        dataType: "html", /*se cambia el tipo "html" por "json"*/
+        processData: false,
+        contentType: false,
+        data: cadena,
+        timeout: 20000,
+        success: function (datos) {
+            metodo(datos);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 0) {
+                alert('Not connect: Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (textStatus === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (textStatus === 'timeout') {
+                alert('Time out error.');
+            } else if (textStatus === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error: ' + jqXHR.responseText);
+            }
+//            alert("No hay conexión");
+        }
+    });
+}
 function activeMenu(id) {
     $("#elmMenu a").removeClass('active');
     $(id).addClass('active');
@@ -421,6 +471,7 @@ function formBuscarOut() {
         $("#lbfolder").html("SOC OUT");
         formDatosSalida();
         $("#btnBuscMovOut").click(function () {
+            formDatosSalida();
             validarBuscarMovilOut();
         });
     };
@@ -439,7 +490,7 @@ function formDatosSalida() {
         $("#sectionFormDatIngreso").html(datos);
 
         $("#btnGuardarSocOut").click(function () {
-            validarGuardarSocOut();
+            validarGuardarSocOut(ult_soc_in);
         });
         $("#btnResetOut").click(function () {
             resetFormSocOut();
@@ -468,9 +519,10 @@ function validarBuscarMovilOut() {
 
 /**
  * Metodo de validacion formsoc out
+ * @param {type} ult_soc_in
  * @returns {undefined}
  */
-function validarGuardarSocOut() {
+function validarGuardarSocOut(ult_soc_in) {
     $("#formSocOut").validate({
         rules: {
             inpKWhOut: {
@@ -478,7 +530,8 @@ function validarGuardarSocOut() {
             },
             inpSocOut: {
                 required: true,
-                max: 100
+                max: 100,
+                min: ult_soc_in
             },
             inpElectLineOut: {
                 required: true,
@@ -491,7 +544,7 @@ function validarGuardarSocOut() {
         }
     });
 }
-
+var ult_soc_in;
 /**
  * Metodo que retorna los datos del movil consultado en proceso out
  * @returns {undefined}
@@ -514,9 +567,14 @@ function datos_movilOut() {
         } else {
             arreglo_mov = $.parseJSON(datos);
 
-
             if (arreglo_mov !== 0) {
                 temp = arreglo_mov[0];
+
+                if (temp.sin_in == "" || temp.sin_in == null) {
+                    ult_soc_in = parseFloat(1);
+                } else {
+                    ult_soc_in = parseFloat(temp.sin_in);
+                }
 
                 if (temp.em_id == 1) {
                     color = '#2ec551';
@@ -1174,15 +1232,15 @@ function tablaReporteControlCarga() {
                 datosBusCarga += '<td>' + tmp.sout_out + '</td>';
                 datosBusCarga += '<td>' + tmp.sout_kwh + '</td>';
                 datosBusCarga += '<td>' + tmp.rendimiento + '</td>';
-                if(tmp.sout_lavado == 'SI'){
+                if (tmp.sout_lavado == 'SI') {
                     datosBusCarga += '<td class="table-info">' + tmp.sout_lavado + '</td></tr>';
-                }else if (tmp.sout_lavado == 'NO') {
+                } else if (tmp.sout_lavado == 'NO') {
                     datosBusCarga += '<td class="table-danger">' + tmp.sout_lavado + '</td></tr>';
-                }else{
+                } else {
                     datosBusCarga += '<td>' + tmp.sout_lavado + '</td></tr>';
                 }
 
-                
+
             }
             datosBusCarga += '</tbody><tfoot>\n\
                             <tr>\n\
@@ -1227,7 +1285,7 @@ function tablaReporteControlCarga() {
 function reporte_carga_Xlsx() {
 //    alert(num_suc);
     request = "../controllers/bus/report_carga_xlsx_controller.php";
-    cadena = "a=1" ; //envio de parametros por POST
+    cadena = "a=1"; //envio de parametros por POST
     metodo = function (datos) {
         rutaXLS_guardado(datos);
     };
@@ -1248,4 +1306,82 @@ function rutaXLS_guardado(clienteReport) {
         alertify.warning('Reporte Generado!!!');
     }
 
+}
+/**********************************/
+/**funciones Administrar Buses**/
+/**********************************/
+/**
+ * Metodo que carga el formulario de registro de buses
+ * @returns {undefined}
+ */
+function formSubidaMasivaBuses() {
+    request = "screens/formNuevoBus.php";
+    cadena = "a=1";
+    metodo = function (datos) {
+//        alert(datos);
+        $("#titleDash").html("Registrar Buses");
+        $("#lbfolder").html("ADMINISTRAR");
+        $("#sectionDashAllBus").html(datos);
+        $("#titleFormBus").html('Nuevo Bus');
+        $("#guardaBusesXlsx").click(function () {
+            validarMasivoBuses();
+        });
+        nameFileCargaMasBuses();
+        $("#sectionTableAllUser").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+        setTimeout(tablaGeneralAllUser, 350);
+    };
+    f_ajax(request, cadena, metodo);
+}
+/**
+ * Metodo que plasma nombre archivo en carga masiva Buses
+ * @returns {undefined}
+ */
+function nameFileCargaMasBuses() {
+    $("#inpMasBuses").change(function () {
+        nombre = $("#inpMasBuses").val();
+        $("#lbNameFileBus").text(nombre);
+    });
+}
+/**
+ * Metodo de validacion Carga masiva de buses xlsx
+ * @returns {undefined}
+ */
+function validarMasivoBuses() {
+    $("#formBusesMasivo").validate({
+        errorLabelContainer: '#errorTxt',
+        rules: {
+            inpMasBuses: {
+                required: true,
+                extension: "xlsx"
+            }
+        },
+        messages: {
+            inpMasBuses: {
+                extension: "Extensión no valida, debe ser xlsx",
+                required: "El campo Excel es obligatorio"
+            }
+        }, submitHandler: function (form) {
+            cargaArchivo_xlsx_alist_dash();
+        }
+    });
+}
+/**
+ * Metodo que se encarga de guardar un fichero en la carpeta temporal de alistamiento
+ * @returns {undefined}
+ */
+function cargaArchivo_xlsx_alist() {
+    var creando = '<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>';
+    $("#errorTxt").html(creando);
+    request = "";
+    cadena = new FormData($("#formBusesMasivo")[0]);
+    metodo = function (datos) {
+        $("#textMasAlist").html("");
+        limpiarFormulario("#formMasAlistamiento");
+
+        $("#changeAlistEnvios").html(datos);
+        $("#formMasAlistamiento").hide();
+        cargaProdAlistamiento(id_suc_sel);
+
+    };
+    f_ajax_files(request, cadena, metodo);
 }
