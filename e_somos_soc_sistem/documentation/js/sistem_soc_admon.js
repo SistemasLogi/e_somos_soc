@@ -1174,6 +1174,36 @@ function reporte_control_carga() {
         $("#btnReportCargaXlsx").click(function () {
             reporte_carga_Xlsx();
         });
+
+        $("#btnVerReport").click(function () {
+
+            ini_fecha = $("#inpFecIni").val();
+            fin_fecha = $("#inpFecFin").val();
+            num_movil = $("#inpNumMovilReport").val();
+
+            if (ini_fecha !== "" && fin_fecha !== "") {
+                if (ini_fecha > fin_fecha) {
+                    alertify.alert("La fecha de inicio no debe ser mayor que la fecha final, la  consulta generada no es acorde a el tiempo.").setHeader('<em> Cuidado! </em> ');
+                    $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+                    setTimeout(tablaReporteControlCarga, 350);
+                    $("#btnReportCargaXlsx").click(function () {
+                        reporte_carga_Xlsx();
+                    });
+
+                } else {
+                    $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+                    setTimeout(tablaReporteControlCargaFechas(ini_fecha, fin_fecha, num_movil), 350);
+
+                    $("#btnReportCargaXlsx").click(function () {
+                        reporte_carga_Xlsx();
+                    });
+                }
+            } else {
+                $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+                setTimeout(tablaReporteControlCarga, 350);
+            }
+
+        });
         $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
         setTimeout(tablaReporteControlCarga, 350);
     };
@@ -1191,7 +1221,7 @@ function tablaReporteControlCarga() {
         /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
         if (arregloBusCarga !== 0) {
             datosBusCarga = '<div class="card">\n\
-                            <h5 class="card-header">Tabla Buses</h5>\n\
+                            <h5 class="card-header">Tabla Carga-Rendimiento Hoy</h5>\n\
                             <div class="card-body">\n\
                                 <div class="table-responsive text-nowrap" id="contenTable">\n\
                                     <table class="table table-sm table-striped table-bordered" id="tableAllCarga">\n\
@@ -1263,6 +1293,100 @@ function tablaReporteControlCarga() {
              */
 
             $('#tableAllCarga').DataTable();
+
+        } else {
+            $("#SectionTableXlsx").html('<div class="card">\n\
+                                    <h5 class="card-header">Tabla Buses Out</h5>\n\
+                                    <div class="card-body">\n\
+                                        <div class="table-responsive">\n\
+                                            <span>Sin Datos Recientes</span>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>');
+        }
+    };
+    f_ajax(request, cadena, metodo);
+}
+/**
+ * Metodo que retorna el listado de control de carga por rango de fechas
+ * @param {type} fecha_inicio
+ * @param {type} fecha_final
+ * @param {type} movil_num
+ * @returns {undefined}
+ */
+function tablaReporteControlCargaFechas(fecha_inicio, fecha_final, movil_num) {
+    request = "../controllers/bus/consulta_control_carga_param_controller.php";
+    cadena = {"inpFecIni": fecha_inicio, "inpFecFin": fecha_final, "inpNumMovilReport": movil_num}; //envio de parametros por POST
+    metodo = function (datos) {
+//        alert(datos);
+//        $("#SectionTableXlsx").html(datos);
+        arregloBusCarga = $.parseJSON(datos);
+        /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
+        if (arregloBusCarga !== 0) {
+            datosBusCarga = '<div class="card">\n\
+                            <h5 class="card-header">Tabla Carga-Rendimiento del ' + $("#inpFecIni").val() + ' al ' + $("#inpFecFin").val() + '</h5>\n\
+                            <div class="card-body">\n\
+                                <div class="table-responsive text-nowrap" id="contenTable">\n\
+                                    <table class="table table-sm table-striped table-bordered" id="tableAllCarga">\n\
+                                        <thead>\n\
+                                            <tr>\n\
+                                                <th>FECHA SOC_Out</th>\n\
+                                                <th class="table-info">MOVIL</th>\n\
+                                                <th class="table-info">PLACA</th>\n\
+                                                <th class="table-warning">ÚLTIMO Km_ODO</th>\n\
+                                                <th class="table-warning">Km RECORRIDO</th>\n\
+                                                <th class="table-warning">SOC_In</th>\n\
+                                                <th class="table-success">SOC Out</th>\n\
+                                                <th class="table-success">KWh</th>\n\
+                                                <th class="table-success">RENDIMIENTO</th>\n\
+                                                <th class="table-success">LAVADO</th>\n\
+                                            </tr>\n\
+                                        </thead>\n\
+                                        <tbody>';
+            for (i = 0; i < arregloBusCarga.length; i++) {
+                tmp = arregloBusCarga[i];
+                datosBusCarga += '<tr id="fila' + i + '">';
+                datosBusCarga += '<td>' + tmp.fecha + '</td>';
+                datosBusCarga += '<td>' + tmp.movil + '</td>';
+                datosBusCarga += '<td>' + tmp.placa + '</td>';
+                datosBusCarga += '<td>' + tmp.ult_km_odo + '</td>';
+                datosBusCarga += '<td>' + tmp.ult_km_rec + '</td>';
+                datosBusCarga += '<td>' + tmp.soc_in + '</td>';
+                datosBusCarga += '<td>' + tmp.soc_out + '</td>';
+                datosBusCarga += '<td>' + tmp.kwh + '</td>';
+                datosBusCarga += '<td>' + tmp.rendimiento + '</td>';
+                if (tmp.lavado == 'SI') {
+                    datosBusCarga += '<td class="table-info">' + tmp.lavado + '</td></tr>';
+                } else if (tmp.lavado == 'NO') {
+                    datosBusCarga += '<td class="table-danger">' + tmp.lavado + '</td></tr>';
+                } else {
+                    datosBusCarga += '<td>' + tmp.lavado + '</td></tr>';
+                }
+
+
+            }
+            datosBusCarga += '</tbody><tfoot>\n\
+                            <tr>\n\
+                                <th>FECHA SOC_Out</th>\n\
+                                <th class="table-info">MOVIL</th>\n\
+                                <th class="table-info">PLACA</th>\n\
+                                <th class="table-warning">ÚLTIMO Km_ODO</th>\n\
+                                <th class="table-warning">Km RECORRIDO</th>\n\
+                                <th class="table-warning">SOC_In</th>\n\
+                                <th class="table-success">SOC Out</th>\n\
+                                <th class="table-success">KWh</th>\n\
+                                <th class="table-success">RENDIMIENTO</th>\n\
+                                <th class="table-success">LAVADO</th>\n\
+                            </tr>\n\
+                        </tfoot></table></div></div></div>';
+            $("#SectionTableXlsx").html(datosBusCarga);
+            /**
+             * Evento que pagina una tabla 
+             */
+
+            $('#tableAllCarga').DataTable({
+                'order': [[1, 'desc'], [0, 'desc']]
+            });
 
         } else {
             $("#SectionTableXlsx").html('<div class="card">\n\

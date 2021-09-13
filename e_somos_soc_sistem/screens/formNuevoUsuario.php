@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-7 col-lg-7 col-md-5 col-sm-4 col-12" id="sectionTableAllUser">
+    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-8 col-12" id="sectionTableAllUser">
 
     </div>
 </div>

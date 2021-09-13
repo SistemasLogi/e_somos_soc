@@ -109,9 +109,9 @@ if (!isset($_SESSION["admon"])) {
                                             <li class="nav-item">
                                                 <a class="nav-link link_icon" id="subEnlNewUser">Usuarios</a>
                                             </li>
-<!--                                            <li class="nav-item">
+                                            <li class="nav-item">
                                                 <a class="nav-link link_icon" id="subEnlUpdUser">Buses</a>
-                                            </li>-->
+                                            </li>
                                         </ul>
                                     </div>
                                     <a class="nav-link" href="#" id="enlReport" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fa fa-fw fa-file-excel"></i>REPORTES</a>
