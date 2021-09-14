@@ -152,6 +152,37 @@ function sessio_refresh() {
     };
     f_ajax(request, cadena, metodo);
 }
+/**
+ * Metodo general que limpia campos de un formulario
+ * @param {type: form} formulario
+ * @returns {undefined}
+ */
+function limpiarFormulario(formulario) {
+    /* Se encarga de leer todas las etiquetas input del formulario*/
+    $(formulario).find('input').each(function () {
+        switch (this.type) {
+            case 'password':
+            case 'text':
+            case 'hidden':
+            case 'date':
+            case 'file':
+            case 'time':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+    });
+    /* Se encarga de leer todas las etiquetas select del formulario */
+    $(formulario).find('select').each(function () {
+        $("#" + this.id + " option[value=0]").attr("selected", true);
+    });
+    /* Se encarga de leer todas las etiquetas textarea del formulario */
+    $(formulario).find('textarea').each(function () {
+        $(this).val('');
+    });
+}
 
 /************************/
 /**funciones soc_in**/
@@ -1175,6 +1206,17 @@ function reporte_control_carga() {
             reporte_carga_Xlsx();
         });
 
+
+        /**evento enter desde elemento input**/
+        $("#inpNumMovilReport").keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                $("#btnVerReport").focus();
+                return false;
+            }
+        });
+
+
         $("#btnVerReport").click(function () {
 
             ini_fecha = $("#inpFecIni").val();
@@ -1186,7 +1228,7 @@ function reporte_control_carga() {
                     alertify.alert("La fecha de inicio no debe ser mayor que la fecha final, la  consulta generada no es acorde a el tiempo.").setHeader('<em> Cuidado! </em> ');
                     $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
                     setTimeout(tablaReporteControlCarga, 350);
-                    $("#btnReportCargaXlsx").click(function () {
+                    $("#btnReportCargaXlsxFech").click(function () {
                         reporte_carga_Xlsx();
                     });
 
@@ -1194,8 +1236,8 @@ function reporte_control_carga() {
                     $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
                     setTimeout(tablaReporteControlCargaFechas(ini_fecha, fin_fecha, num_movil), 350);
 
-                    $("#btnReportCargaXlsx").click(function () {
-                        reporte_carga_Xlsx();
+                    $("#btnReportCargaXlsxFech").click(function () {
+                        reporte_carga_Xlsx_fechas(ini_fecha, fin_fecha, num_movil);
                     });
                 }
             } else {
@@ -1403,7 +1445,6 @@ function tablaReporteControlCargaFechas(fecha_inicio, fecha_final, movil_num) {
 }
 /**
  * Metodo que genera un reporte en excel .xlsx de carga y rendimiento
- * segun cliente y sucursal seleccionados
  * @returns {reporte_sock_Xls}
  */
 function reporte_carga_Xlsx() {
@@ -1431,6 +1472,24 @@ function rutaXLS_guardado(clienteReport) {
     }
 
 }
+/**
+ * Metodo que genera un reporte en excel .xlsx de carga y rendimiento
+ * segun fechas y movil
+ * @param {type} fecha_inicio
+ * @param {type} fecha_final
+ * @param {type} movil_num
+ * @returns {reporte_sock_Xls}
+ */
+function reporte_carga_Xlsx_fechas(fecha_inicio, fecha_final, movil_num) {
+//    alert(num_suc);
+    request = "../controllers/bus/report_carga_xlsx_fechas_controller.php";
+    cadena = {"inpFecIni": fecha_inicio, "inpFecFin": fecha_final, "inpNumMovilReport": movil_num}; //envio de parametros por POST
+    metodo = function (datos) {
+        rutaXLS_guardado(datos);
+    };
+    f_ajax(request, cadena, metodo);
+}
+
 /**********************************/
 /**funciones Administrar Buses**/
 /**********************************/
@@ -1451,8 +1510,8 @@ function formSubidaMasivaBuses() {
             validarMasivoBuses();
         });
         nameFileCargaMasBuses();
-        $("#sectionTableAllUser").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-        setTimeout(tablaGeneralAllUser, 350);
+        $("#SectionTableXlsxBusNew").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
+        setTimeout(tablaTotalFlota, 350);
     };
     f_ajax(request, cadena, metodo);
 }
@@ -1485,7 +1544,7 @@ function validarMasivoBuses() {
                 required: "El campo Excel es obligatorio"
             }
         }, submitHandler: function (form) {
-            cargaArchivo_xlsx_alist_dash();
+            cargaArchivo_xlsx_alist();
         }
     });
 }
@@ -1495,17 +1554,103 @@ function validarMasivoBuses() {
  */
 function cargaArchivo_xlsx_alist() {
     var creando = '<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>';
-    $("#errorTxt").html(creando);
-    request = "";
+    $("#SectionTableXlsxBusNew").html(creando);
+    request = "../controllers/bus/cargar_xlsx_new_bus_controller.php";
     cadena = new FormData($("#formBusesMasivo")[0]);
     metodo = function (datos) {
-        $("#textMasAlist").html("");
-        limpiarFormulario("#formMasAlistamiento");
+        limpiarFormulario("#formBusesMasivo");
+        $("#lbNameFileBus").text("");
+        if (datos == 1) {
+            tablaTotalFlota();
+            alertify.warning('Buses Creados en BD OK!!!');
+        } else {
+            $("#errorTxt").html(datos);
+            tablaTotalFlota();
+        }
 
-        $("#changeAlistEnvios").html(datos);
-        $("#formMasAlistamiento").hide();
-        cargaProdAlistamiento(id_suc_sel);
+
 
     };
     f_ajax_files(request, cadena, metodo);
+}
+
+/**
+ * Metodo que retorna el listado total de la flota para una empresa
+ * @returns {undefined}
+ */
+function tablaTotalFlota() {
+    request = "../controllers/bus/consulta_flota_emp_controller.php";
+    cadena = "a=1"; //envio de parametros por POST
+    metodo = function (datos) {
+        arregloBus = $.parseJSON(datos);
+        /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
+        if (arregloBus !== 0) {
+            datosBus = '<div class="card">\n\
+                            <h5 class="card-header">Tabla Total Buses</h5>\n\
+                            <div class="card-body">\n\
+                                <div class="table-responsive text-nowrap" id="contenTable">\n\
+                                    <table class="table table-sm table-striped table-bordered" id="tableAllBusEmp">\n\
+                                        <thead>\n\
+                                            <tr>\n\
+                                                <th class="table-info">MOVIL</th>\n\
+                                                <th class="table-info">PLACA</th>\n\
+                                                <th class="table-info">TIPO</th>\n\
+                                                <th class="table-info">MODELO</th>\n\
+                                                <th class="table-info">REFERENCIA</th>\n\
+                                                <th class="table-info">NUM VIN</th>\n\
+                                                <th class="table-info">MOTOR</th>\n\
+                                                <th class="table-info">VOLTAJE</th>\n\
+                                                <th class="table-info">POTENCIA</th>\n\
+                                                <th class="table-info">TORQUE</th>\n\
+                                            </tr>\n\
+                                        </thead>\n\
+                                        <tbody>';
+            for (i = 0; i < arregloBus.length; i++) {
+                tmp = arregloBus[i];
+                datosBus += '<tr id="fila' + i + '">';
+                datosBus += '<td>' + tmp.bus_num_movil + '</td>';
+                datosBus += '<td>' + tmp.bus_placa + '</td>';
+                datosBus += '<td>' + tmp.tip_tipo + '</td>';
+                datosBus += '<td>' + tmp.bus_modelo + '</td>';
+                datosBus += '<td>' + tmp.bus_ref + '</td>';
+                datosBus += '<td>' + tmp.bus_num_vin + '</td>';
+                datosBus += '<td>' + tmp.bus_motor + '</td>';
+                datosBus += '<td>' + tmp.bus_voltaje + '</td>';
+                datosBus += '<td>' + tmp.bus_potencia + '</td>';
+                datosBus += '<td>' + tmp.bus_torque + '</td></tr>';
+
+            }
+            datosBus += '</tbody><tfoot>\n\
+                            <tr>\n\
+                                <th class="table-info">MOVIL</th>\n\
+                                    <th class="table-info">PLACA</th>\n\
+                                    <th class="table-info">TIPO</th>\n\
+                                    <th class="table-info">MODELO</th>\n\
+                                    <th class="table-info">REFERENCIA</th>\n\
+                                    <th class="table-info">NUM VIN</th>\n\
+                                    <th class="table-info">MOTOR</th>\n\
+                                    <th class="table-info">VOLTAJE</th>\n\
+                                    <th class="table-info">POTENCIA</th>\n\
+                                    <th class="table-info">TORQUE</th>\n\
+                            </tr>\n\
+                        </tfoot></table></div></div></div>';
+            $("#SectionTableXlsxBusNew").html(datosBus);
+            /**
+             * Evento que pagina una tabla 
+             */
+
+            $('#tableAllBusEmp').DataTable();
+
+        } else {
+            $("#SectionTableXlsxBusNew").html('<div class="card">\n\
+                                    <h5 class="card-header">Tabla Total Buses</h5>\n\
+                                    <div class="card-body">\n\
+                                        <div class="table-responsive">\n\
+                                            <span>Sin Datos Recientes</span>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>');
+        }
+    };
+    f_ajax(request, cadena, metodo);
 }

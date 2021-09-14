@@ -63,9 +63,39 @@ if ($_POST) {
                 $movil = "Z66-" . $num_movil; //serial e_somos fontibon
             }
 
-            $param_out = " AND O.sout_fecha BETWEEN '" . $fec_ini . "' AND '" . $fec_fin . "' AND O.bus_num_movil = '" . $movil . "' ";
-            $param_in = " AND I.sin_fecha BETWEEN DATE_ADD('" . $fec_ini . "', INTERVAL -2 DAY) AND '" . $fec_fin . "' AND O.bus_num_movil = '" . $movil . "' ";
-            echo json_encode($bus_dao->consultaGeneralAllBusRendimientoParam($empresa, $param));
+            $param_out = " AND O.sout_fecha BETWEEN DATE_ADD('" . $fec_ini . "', INTERVAL -2 DAY) AND '" . $fec_fin . "' AND O.bus_num_movil = '" . $movil . "' ";
+            $param_in = " AND I.sin_fecha BETWEEN DATE_ADD('" . $fec_ini . "', INTERVAL -2 DAY) AND '" . $fec_fin . "' AND I.bus_num_movil = '" . $movil . "' ";
+            $datos_encode = json_encode($bus_dao->consultaGeneralAllBusRendimientoParam($empresa, $param_out, $param_in));
+//            echo json_encode($bus_dao->consultaGeneralAllBusRendimientoParam($empresa, $param_out, $param_in));
+
+            $datos_decode = json_decode($datos_encode);
+
+            $validos = 0;
+
+            for ($i = 0; $i < count($datos_decode) - 3; $i++) {
+                if ($datos_decode[$i]->estado == 0) {
+
+                    $bus = $datos_decode[$i]->movil;
+
+                    if ($datos_decode[$i + 3]->movil === $bus) {
+                        $fecha_out = $datos_decode[$i]->fecha;
+                        $movil_num = $datos_decode[$i]->movil;
+                        $placa_num = $datos_decode[$i]->placa;
+                        $ultimo_km_odo = $datos_decode[$i + 1]->km;
+                        $ultimo_km_rec = ($datos_decode[$i + 1]->km - $datos_decode[$i + 3]->km);
+                        $soc_in = $datos_decode[$i + 1]->soc_in;
+                        $soc_out = $datos_decode[$i]->soc_out;
+                        $kwh = $datos_decode[$i]->kwh;
+                        $rendimiento = ($ultimo_km_rec / $kwh);
+                        $lavado_out = $datos_decode[$i]->lavado;
+
+                        $datos_validos[$validos] = array("fecha" => $fecha_out, "movil" => $movil_num, "placa" => $placa_num, "ult_km_odo" => $ultimo_km_odo, "ult_km_rec" => $ultimo_km_rec, "soc_in" => $soc_in, "soc_out" => $soc_out, "kwh" => $kwh, "rendimiento" => $rendimiento, "lavado" => $lavado_out);
+
+                        $validos++;
+                    }
+                }
+            }
+            echo json_encode($datos_validos);
         }
     }
 } else {

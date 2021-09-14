@@ -9,7 +9,10 @@ session_start();
                 El dato de lavado esta sujeto al último SOC_OUT registrado.</p>
         </div>
     </div>
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="col col-sm-4 col-lg-3 offset-sm-1 offset-lg-0">
+        <button type="button" class="btn btn-success btn-sm" id="btnReportCargaXlsx" name="btnReportCargaXlsx"><i class="fa fa-fw fa-file-excel"></i>Descargar excel HOY</button>
+    </div>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
         <div class="card">
             <h5 class="card-header">Buscar Rango Fechas</h5>
             <div class="card-body">
@@ -39,7 +42,7 @@ session_start();
                         </div>
                         <div class="row text-center mt-4">
                             <div class="col col-sm-4 col-lg-3 offset-sm-1 offset-lg-0">
-                                <button type="button" class="btn btn-success btn-sm" id="btnReportCargaXlsx" name="btnReportCargaXlsx"><i class="fa fa-fw fa-file-excel"></i>Descargar excel</button>
+                                <button type="button" class="btn btn-success btn-sm" id="btnReportCargaXlsxFech" name="btnReportCargaXlsxFech"><i class="fa fa-fw fa-file-excel"></i>Descargar excel fechas</button>
                             </div>
                         </div>
                     </div>                    

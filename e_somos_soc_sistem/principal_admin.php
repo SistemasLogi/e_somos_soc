@@ -103,6 +103,17 @@ if (!isset($_SESSION["admon"])) {
                                     <a class="nav-link link_icon" id="enlSocIn"><i class="fas fa-battery-quarter"></i>SOC IN<span class="badge badge-success"></span></a>
                                     <a class="nav-link link_icon" id="enlSocOut"><i class="fas fa-battery-full"></i>SOC OUT<span class="badge badge-success"></span></a>                                    
                                     <a class="nav-link link_icon" id="enlAllBus"><i class="fas fa-bus"></i>ALL BUS<span class="badge badge-success"></span></a>
+                                    <a class="nav-link" href="#" id="enlReport" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fa fa-fw fa-file-excel"></i>REPORTES</a>
+                                    <div id="submenu-3" class="collapse submenu">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link link_icon" id="subEnlCargaFlota">Control Carga Flota</a>
+                                            </li>
+                                            <!--                                            <li class="nav-item">
+                                                                                            <a class="nav-link link_icon" id="subEnlLavadoFlota">Control de Lavado</a>
+                                                                                        </li>-->
+                                        </ul>
+                                    </div>
                                     <a class="nav-link" href="#" id="enlAdmon" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-user-secret"></i>ADMINISTRAR</a>
                                     <div id="submenu-2" class="collapse submenu">
                                         <ul class="nav flex-column">
@@ -113,18 +124,7 @@ if (!isset($_SESSION["admon"])) {
                                                 <a class="nav-link link_icon" id="subEnlUpdUser">Buses</a>
                                             </li>
                                         </ul>
-                                    </div>
-                                    <a class="nav-link" href="#" id="enlReport" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fa fa-fw fa-file-excel"></i>REPORTES</a>
-                                    <div id="submenu-3" class="collapse submenu">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <a class="nav-link link_icon" id="subEnlCargaFlota">Control Carga Flota</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link link_icon" id="subEnlLavadoFlota">Control de Lavado</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    </div>                                    
                                     <a class="nav-link" href="../controllers/login/logout_controller.php"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión<span class="badge badge-success"></span></a>                                    
                                 </li>
                             </ul>

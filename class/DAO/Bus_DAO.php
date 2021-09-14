@@ -184,16 +184,28 @@ class Bus_DAO {
     function consultaGeneralAllBusRendimientoParam($empresa, $param_out, $param_in) {
         $sql = "SELECT M.* FROM ("
                 . "SELECT O.sout_fecha AS fecha, O.bus_em_id AS empresa, O.bus_num_movil AS movil, O.sout_kwh AS kwh, O.sout_out AS soc_out, O.us_id AS us_id, O.sout_lavado AS lavado, O.sout_num_electrolinea AS elct, "
-                . "0 AS km, 0 AS soc_in, 0 AS estado, B.bus_placa AS placa "
+                . "0 AS km, null AS soc_in, 0 AS estado, B.bus_placa AS placa "
                 . "FROM soc_out AS O, bus AS B "
                 . "WHERE O.bus_num_movil = B.bus_num_movil AND O.bus_em_id = " . $empresa . "" . $param_out . ""
                 . "UNION "
-                . "SELECT I.sin_fecha AS fecha, I.bus_em_id AS empresa, I.bus_num_movil AS movil, 0 AS kwh, 0 AS soc_out, I.us_id AS us_id, '' AS lavado, I.sin_num_electrolinea AS elct, "
+                . "SELECT I.sin_fecha AS fecha, I.bus_em_id AS empresa, I.bus_num_movil AS movil, null AS kwh, null AS soc_out, I.us_id AS us_id, '' AS lavado, I.sin_num_electrolinea AS elct, "
                 . "I.sin_km AS km, I.sin_in AS soc_in, 1 AS estado, B.bus_placa AS placa "
                 . "FROM soc_in AS I, bus AS B "
                 . "WHERE I.bus_num_movil = B.bus_num_movil AND I.bus_em_id = " . $empresa . "" . $param_in . ""
                 . ") AS M "
                 . "ORDER BY M.movil DESC, M.fecha DESC;";
+        $BD = new MySQL();
+        return $BD->query($sql);
+//        return $sql;
+    }
+
+    /**
+     * Funcion que retorna el listado total de la flota para una empresa
+     * @param type $empresa
+     * @return type
+     */
+    function consultaGeneralAllBusEmpresa($empresa) {
+        $sql = "SELECT B.*, T.tip_tipo FROM bus AS B, tipologia AS T WHERE B.tip_id = T.tip_id AND B.em_id = " . $empresa . ";";
         $BD = new MySQL();
         return $BD->query($sql);
 //        return $sql;
