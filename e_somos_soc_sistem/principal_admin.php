@@ -245,36 +245,37 @@ if (!isset($_SESSION["admon"])) {
                 <!-- end wrapper  -->
                 <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- end main wrapper  -->
-            <!-- ============================================================== -->
-            <!-- Optional JavaScript -->
-            <!-- jquery 3.3.1 -->
-            <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-            <!-- bootstap bundle js -->
-            <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-            <script src="documentation/js/jquery.validate.js" type="text/javascript"></script>
-            <script src="documentation/js/additional-methods.js" type="text/javascript"></script>
-            <script src="documentation/js/localization/messages_es.js" type="text/javascript"></script>       
-            <script src="documentation/js/alertify.js" type="text/javascript"></script>
-            <script src="documentation/js/sistem_soc_admon.js" type="text/javascript"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-            <script src="assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-            <script src="assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
-            <script src="assets/vendor/datatables/js/data-table.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
-            <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
-            <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
-            <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-            <!-- slimscroll js -->
-            <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-            <!-- main js -->
-            <script src="assets/libs/js/main-js.js"></script>
-            <!-- sparkline js -->
-            <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end main wrapper  -->
+        <!-- ============================================================== -->
+        <!-- Optional JavaScript -->
+        <!-- jquery 3.3.1 -->
+        <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+        <!-- bootstap bundle js -->
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="documentation/js/jquery.validate.js" type="text/javascript"></script>
+        <script src="documentation/js/additional-methods.js" type="text/javascript"></script>
+        <script src="documentation/js/localization/messages_es.js" type="text/javascript"></script>       
+        <script src="documentation/js/alertify.js" type="text/javascript"></script>
+        <script src="documentation/js/sistem_soc_admon.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+        <script src="assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+        <script src="assets/vendor/datatables/js/data-table.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+        <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+        <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+        <!-- slimscroll js -->
+        <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+        <!-- main js -->
+        <script src="assets/libs/js/main-js.js"></script>
+        <!-- sparkline js -->
+        <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
     </body>
 
 </html>
