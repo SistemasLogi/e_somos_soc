@@ -3,7 +3,7 @@
 session_start();
 
 if ($_POST) {
-    require '../../config.php';
+    require './../../config.php';
     $soc_out_dao = new Soc_out_DAO();
 
     $lavado = $_POST["radioLavado"];

@@ -1,10 +1,10 @@
 <?php
 
-require '../../class/phpspreadsheet/vendor/autoload.php';
+require './../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-//require '../../../config.php';
+require './../../config.php';
 
 date_default_timezone_set('America/Bogota');
 $fecha_hora_now = date("Y-m-d H:i:s");

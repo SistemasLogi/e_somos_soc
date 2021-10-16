@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 if ($_POST) {
-    require '../../config.php';
+    require './../../config.php';
     $upass_dao = new Usuario_DAO();
     $upass_vo = new Usuario_VO();
 

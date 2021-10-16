@@ -26,7 +26,7 @@ $(document).ready(function () {
         $("#sectionTable").html("");
         activeMenu("#enlAllBus");
         dashTodosBus();
-        setTimeout(tablaGeneralAllBus, 250);
+        setTimeout(tablaGeneralAllBus, 50);
     });
     setInterval(sessio_refresh, 165000);
 });
@@ -370,12 +370,12 @@ function guardar_soc_in() {
             $("#inpNumMovil").val("");
             $("#sectionDataMovil").html("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusOut, 450);
+            setTimeout(tablaGeneralBusOut, 50);
             formDatosIngreso();
         } else {
 //            alert(datos);
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusOut, 650);
+            setTimeout(tablaGeneralBusOut, 50);
             alertify.alert('La Electrolinea se encuentra ocupada por el Movil ' + datos).setHeader('<em> ERROR!! </em> ');
         }
     };
@@ -556,11 +556,11 @@ function datos_movilOut() {
                 $("#inpLavNo").removeAttr('readonly');
                 $("#inpElectLineOut").removeAttr('readonly');
                 $("#inpElectLineOut").val(temp.sin_num_electrolinea);
-                if (temp.sin_num_electrolinea == "" || temp.sin_num_electrolinea == null) {
-
-                } else {
-                    $("#inpElectLineOut").attr('readonly', 'readonly');
-                }
+//                if (temp.sin_num_electrolinea == "" || temp.sin_num_electrolinea == null) {
+//
+//                } else {
+//                    $("#inpElectLineOut").attr('readonly', 'readonly');
+//                }
                 $("#inpNumBusOut").val(temp.bus_num_movil);
                 $("#inpObservOut").removeAttr('readonly');
                 $("#sectionDataMovil").html(movil_data);
@@ -664,7 +664,7 @@ function guardar_soc_out() {
             $("#inpNumMovilOut").val("");
             $("#sectionDataMovil").html("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusIn, 650);
+            setTimeout(tablaGeneralBusIn, 50);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
@@ -896,7 +896,7 @@ function guardar_lavado() {
             $("#btnCloseModal").trigger("click");
             alertify.warning('Guardado OK!!');
             $("#SectionTableAllBus").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralAllBus, 650);
+            setTimeout(tablaGeneralAllBus, 50);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');

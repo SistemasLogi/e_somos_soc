@@ -3,7 +3,7 @@
 /* iniciar la sesión */
 session_start();
 
-require '../../config.php';
+require './../../config.php';
 
 if ($_POST) {
 

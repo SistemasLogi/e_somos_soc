@@ -87,8 +87,23 @@ function f_ajax(request, cadena, metodo) {
         success: function (datos) {
             metodo(datos);
         },
-        error: function () {
-            alert("No hay conexión");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 0) {
+                alert('Not connect: Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (textStatus === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (textStatus === 'timeout') {
+                alert('Time out error.');
+            } else if (textStatus === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error: ' + jqXHR.responseText);
+            }
+//            alert("No hay conexión");
         }
     });
 }
@@ -473,12 +488,12 @@ function guardar_soc_in() {
             $("#inpNumMovil").val("");
             $("#sectionDataMovil").html("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusOut, 450);
+            setTimeout(tablaGeneralBusOut, 50);
             formDatosIngreso();
         } else {
 //            alert(datos);
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusOut, 650);
+            setTimeout(tablaGeneralBusOut, 50);
             alertify.alert('La Electrolinea se encuentra ocupada por el Movil ' + datos).setHeader('<em> ERROR!! </em> ');
         }
     };
@@ -667,11 +682,11 @@ function datos_movilOut() {
                 $("#inpLavNo").removeAttr('readonly');
                 $("#inpElectLineOut").removeAttr('readonly');
                 $("#inpElectLineOut").val(temp.sin_num_electrolinea);
-                if (temp.sin_num_electrolinea == "" || temp.sin_num_electrolinea == null) {
-
-                } else {
-                    $("#inpElectLineOut").attr('readonly', 'readonly');
-                }
+//                if (temp.sin_num_electrolinea == "" || temp.sin_num_electrolinea == null) {
+//
+//                } else {
+//                    $("#inpElectLineOut").attr('readonly', 'readonly');
+//                }
                 $("#inpNumBusOut").val(temp.bus_num_movil);
                 $("#inpObservOut").removeAttr('readonly');
                 $("#sectionDataMovil").html(movil_data);
@@ -775,7 +790,7 @@ function guardar_soc_out() {
             $("#inpNumMovilOut").val("");
             $("#sectionDataMovil").html("");
             $("#sectionTable").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralBusIn, 650);
+            setTimeout(tablaGeneralBusIn, 50);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
@@ -1013,7 +1028,7 @@ function guardar_lavado() {
             $("#btnCloseModal").trigger("click");
             alertify.warning('Guardado OK!!');
             $("#SectionTableAllBus").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralAllBus, 650);
+            setTimeout(tablaGeneralAllBus, 50);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
@@ -1044,7 +1059,7 @@ function formNuevoUsuario() {
             resetFormUser();
         });
         $("#sectionTableAllUser").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-        setTimeout(tablaGeneralAllUser, 350);
+        setTimeout(tablaGeneralAllUser, 50);
     };
     f_ajax(request, cadena, metodo);
 }
@@ -1080,7 +1095,7 @@ function guardar_usuario() {
             alertify.warning('Guardado OK!!');
             resetFormUser();
             $("#sectionTableAllUser").html('<p>Actualizando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-            setTimeout(tablaGeneralAllUser, 235);
+            setTimeout(tablaGeneralAllUser, 50);
         } else {
 //            alert(datos);
             alertify.alert('Error al guardar, el registro No se Guardo en la base de datos').setHeader('<em> ERROR!! </em> ');
@@ -1227,14 +1242,14 @@ function reporte_control_carga() {
                 if (ini_fecha > fin_fecha) {
                     alertify.alert("La fecha de inicio no debe ser mayor que la fecha final, la  consulta generada no es acorde a el tiempo.").setHeader('<em> Cuidado! </em> ');
                     $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-                    setTimeout(tablaReporteControlCarga, 350);
+                    setTimeout(tablaReporteControlCarga, 50);
                     $("#btnReportCargaXlsxFech").click(function () {
                         reporte_carga_Xlsx();
                     });
 
                 } else {
                     $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-                    setTimeout(tablaReporteControlCargaFechas(ini_fecha, fin_fecha, num_movil), 350);
+                    setTimeout(tablaReporteControlCargaFechas(ini_fecha, fin_fecha, num_movil), 50);
 
                     $("#btnReportCargaXlsxFech").click(function () {
                         reporte_carga_Xlsx_fechas(ini_fecha, fin_fecha, num_movil);
@@ -1242,12 +1257,12 @@ function reporte_control_carga() {
                 }
             } else {
                 $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-                setTimeout(tablaReporteControlCarga, 350);
+                setTimeout(tablaReporteControlCarga, 50);
             }
 
         });
         $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-        setTimeout(tablaReporteControlCarga, 350);
+        setTimeout(tablaReporteControlCarga, 50);
     };
     f_ajax(request, cadena, metodo);
 }
@@ -1511,7 +1526,7 @@ function formSubidaMasivaBuses() {
         });
         nameFileCargaMasBuses();
         $("#SectionTableXlsxBusNew").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-        setTimeout(tablaTotalFlota, 350);
+        setTimeout(tablaTotalFlota, 50);
     };
     f_ajax(request, cadena, metodo);
 }

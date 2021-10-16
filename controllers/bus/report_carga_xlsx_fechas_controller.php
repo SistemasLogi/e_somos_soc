@@ -1,19 +1,20 @@
 <?php
 
 session_start();
-require '../../class/phpspreadsheet/vendor/autoload.php';
+
+require './../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-\PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+$objPhpexcel = new Spreadsheet();
 
 date_default_timezone_set('America/Bogota');
 $fecha_hora_now = date("Y-m-d H:i:s");
 $fech_solo = date('Y-m-d');
 if ($_POST) {
 
-    require '../../config.php';
+    require './../../config.php';
     $bus_dao = new Bus_DAO();
 
     $fecha_inicio = $_POST["inpFecIni"];
@@ -132,8 +133,7 @@ if ($_POST) {
         $drawing->setPath('../../e_somos_soc_sistem/assets/images/' . $empresa . '.png');
         $drawing->setCoordinates('A1');
         $drawing->setHeight(80);
-
-        $objPhpexcel = new Spreadsheet();
+        
         $objPhpexcel->getProperties()->setCreator("e_somos")->setDescription("Reporte Carga ");
         $objPhpexcel->setActiveSheetIndex(0);
         $objPhpexcel->getActiveSheet()->setTitle("Control Carga");

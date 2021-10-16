@@ -16,7 +16,7 @@ session_start();
         <div class="card">
             <h5 class="card-header">Buscar Rango Fechas</h5>
             <div class="card-body">
-                <form id="validationform" data-parsley-validate="" novalidate="">
+                <form id="validationform">
                     <div class="form-group row">                        
                         <div class="col-lg-3">
                             <label>Fecha Inicial</label>

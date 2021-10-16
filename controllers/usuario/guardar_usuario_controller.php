@@ -3,7 +3,7 @@
 session_start();
 
 if ($_POST) {
-    require '../../config.php';
+    require './../../config.php';
     $usuario_dao = new Usuario_DAO();
     $usuario_vo = new Usuario_VO();
 

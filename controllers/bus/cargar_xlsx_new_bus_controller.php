@@ -2,7 +2,7 @@
 
 session_start();
 
-require '../../config.php';
+require './../../config.php';
 
 if ($_POST) {
     $nombre_fichero = $_FILES["inpMasBuses"]["name"];

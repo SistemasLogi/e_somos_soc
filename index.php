@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <?php
 session_start();
-if (isset($_SESSION["us_id"])) {
+if (isset($_SESSION["tecnico"])) {
     header("location:e_somos_soc_sistem/principal.php");
+}elseif (isset($_SESSION["admon"])) {
+    header("location:e_somos_soc_sistem/principal_admin.php");
 }
 ?>
 <!--
