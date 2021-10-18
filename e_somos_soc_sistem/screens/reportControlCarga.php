@@ -41,14 +41,14 @@ session_start();
                             </div>
                         </div>
                         <div class="row text-center mt-4">
-                            <div class="col col-sm-4 col-lg-3 offset-sm-1 offset-lg-0">
+                            <div class="col col-sm-4 col-lg-3 offset-sm-1 offset-lg-0" id="loadingXlsx">
                                 <button type="button" class="btn btn-success btn-sm" id="btnReportCargaXlsxFech" name="btnReportCargaXlsxFech"><i class="fa fa-fw fa-file-excel"></i>Descargar excel fechas</button>
                             </div>
                         </div>
                     </div>                    
                 </form>
             </div>
-        </div>
+        </div>        
     </div>
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3" id="SectionTableXlsx">
 

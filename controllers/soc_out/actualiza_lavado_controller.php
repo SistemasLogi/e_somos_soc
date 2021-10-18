@@ -3,7 +3,7 @@
 session_start();
 
 if ($_POST) {
-    require './../../config.php';
+    require '../../config.php';
     $soc_out_dao = new Soc_out_DAO();
 
     $lavado = $_POST["radioLavado"];
@@ -13,5 +13,5 @@ if ($_POST) {
 
     echo $soc_out_dao->actualizarLavOut($lavado, $fecha, $empresa, $num_movil);
 } else {
-    header("location../");
+    header("location: ../");
 }

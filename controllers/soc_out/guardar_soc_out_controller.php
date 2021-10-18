@@ -3,7 +3,7 @@
 session_start();
 
 if ($_POST) {
-    require './../../config.php';
+    require '../../config.php';
     date_default_timezone_set('America/Bogota');
     $fecha_hora = date("Y-m-d H:i:s");
     $soc_out_dao = new Soc_out_DAO();
@@ -21,5 +21,5 @@ if ($_POST) {
 
     echo $soc_out_dao->guardarSocOut($soc_out_vo);
 } else {
-    header("location../");
+    header("location: ../");
 }

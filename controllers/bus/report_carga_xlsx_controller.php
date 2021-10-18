@@ -2,7 +2,7 @@
 
 session_start();
 
-require './../../vendor/autoload.php';
+require '../../class/phpspreadsheet/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -13,7 +13,7 @@ date_default_timezone_set('America/Bogota');
 $fecha_hora_now = date("Y-m-d H:i:s");
 $fech_solo = date('Y-m-d');
 if ($_POST) {
-    require './../../config.php';
+    require '../../config.php';
     $bus_dao = new Bus_DAO();
 
     $datosCarga = json_encode($bus_dao->consultaGeneralAllBusRendimiento($_SESSION["empresa"]));
@@ -136,5 +136,5 @@ if ($_POST) {
         echo 1;
     }
 } else {
-    header("location../");
+    header("location: ../");
 }    

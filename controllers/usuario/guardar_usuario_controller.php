@@ -3,7 +3,7 @@
 session_start();
 
 if ($_POST) {
-    require './../../config.php';
+    require '../../config.php';
     $usuario_dao = new Usuario_DAO();
     $usuario_vo = new Usuario_VO();
 
@@ -24,5 +24,5 @@ if ($_POST) {
 
     echo $usuario_dao->guardar_us_new($usuario_vo);
 } else {
-    header("location../");
+    header("location: ../");
 }

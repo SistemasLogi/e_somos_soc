@@ -3,7 +3,7 @@
 session_start();
 
 if ($_POST) {
-    require './../../config.php';
+    require '../../config.php';
     date_default_timezone_set('America/Bogota');
     $fecha_hora = date("Y-m-d H:i:s");
     $soc_in_dao = new Soc_in_DAO();
@@ -47,5 +47,5 @@ if ($_POST) {
         echo $soc_in_dao->guardarSocIn($soc_in_vo);
     }
 } else {
-    header("location../");
+    header("location: ../");
 }

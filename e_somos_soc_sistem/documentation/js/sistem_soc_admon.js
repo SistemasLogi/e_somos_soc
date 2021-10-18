@@ -1218,7 +1218,8 @@ function reporte_control_carga() {
         $("#lbfolder").html("REPORTES");
         $("#sectionDashAllBus").html(datos);
         $("#btnReportCargaXlsx").click(function () {
-            reporte_carga_Xlsx();
+//            reporte_carga_Xlsx();
+            reporte_carga_Xlsx_fechas(null, null, null);
         });
 
 
@@ -1242,9 +1243,11 @@ function reporte_control_carga() {
                 if (ini_fecha > fin_fecha) {
                     alertify.alert("La fecha de inicio no debe ser mayor que la fecha final, la  consulta generada no es acorde a el tiempo.").setHeader('<em> Cuidado! </em> ');
                     $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-                    setTimeout(tablaReporteControlCarga, 50);
+//                    setTimeout(tablaReporteControlCarga, 50);
+                    setTimeout(tablaReporteControlCargaFechas(ini_fecha, fin_fecha, num_movil), 50);
                     $("#btnReportCargaXlsxFech").click(function () {
-                        reporte_carga_Xlsx();
+//                        reporte_carga_Xlsx();
+                        reporte_carga_Xlsx_fechas(ini_fecha, fin_fecha, num_movil);
                     });
 
                 } else {
@@ -1257,12 +1260,18 @@ function reporte_control_carga() {
                 }
             } else {
                 $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-                setTimeout(tablaReporteControlCarga, 50);
+//                setTimeout(tablaReporteControlCarga, 50);
+                setTimeout(tablaReporteControlCargaFechas(ini_fecha, fin_fecha, num_movil), 50);
+
+                $("#btnReportCargaXlsxFech").click(function () {
+                    reporte_carga_Xlsx_fechas(ini_fecha, fin_fecha, num_movil);
+                });
             }
 
         });
         $("#SectionTableXlsx").html('<p>Cargando...</p><img class="img-fluid" src="../e_somos_soc_sistem/assets/gif/loading.gif" alt=""/>');
-        setTimeout(tablaReporteControlCarga, 50);
+//        setTimeout(tablaReporteControlCarga, 50);
+        setTimeout(tablaReporteControlCargaFechas(null, null, null), 50);
     };
     f_ajax(request, cadena, metodo);
 }
@@ -1274,6 +1283,7 @@ function tablaReporteControlCarga() {
     request = "../controllers/bus/consulta_control_carga_controller.php";
     cadena = "a=1"; //envio de parametros por POST
     metodo = function (datos) {
+        $("#SectionTableXlsx").html(datos);
         arregloBusCarga = $.parseJSON(datos);
         /*Aqui se determina si la consulta retorna datos, de ser asi se genera vista de tabla, de lo contrario no*/
         if (arregloBusCarga !== 0) {
@@ -1344,7 +1354,7 @@ function tablaReporteControlCarga() {
                                 <th class="table-success">LAVADO</th>\n\
                             </tr>\n\
                         </tfoot></table></div></div></div>';
-            $("#SectionTableXlsx").html(datosBusCarga);
+//            $("#SectionTableXlsx").html(datosBusCarga);
             /**
              * Evento que pagina una tabla 
              */
@@ -1496,11 +1506,15 @@ function rutaXLS_guardado(clienteReport) {
  * @returns {reporte_sock_Xls}
  */
 function reporte_carga_Xlsx_fechas(fecha_inicio, fecha_final, movil_num) {
+    $("#loadingXlsx").html('<p><b>Generando Archivo...</b></p>');
 //    alert(num_suc);
     request = "../controllers/bus/report_carga_xlsx_fechas_controller.php";
     cadena = {"inpFecIni": fecha_inicio, "inpFecFin": fecha_final, "inpNumMovilReport": movil_num}; //envio de parametros por POST
     metodo = function (datos) {
+//        alert(datos);
         rutaXLS_guardado(datos);
+        $("#loadingXlsx").html('<button type="button" class="btn btn-success btn-sm" id="btnReportCargaXlsxFech" name="btnReportCargaXlsxFech"><i class="fa fa-fw fa-file-excel"></i>Descargar excel fechas</button>');
+//        $("#btnReportCargaXlsxFech").removeClass("disabled");
     };
     f_ajax(request, cadena, metodo);
 }

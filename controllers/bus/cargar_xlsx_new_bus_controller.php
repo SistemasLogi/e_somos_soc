@@ -2,7 +2,7 @@
 
 session_start();
 
-require './../../config.php';
+require '../../config.php';
 
 if ($_POST) {
     $nombre_fichero = $_FILES["inpMasBuses"]["name"];
@@ -32,7 +32,7 @@ if ($_POST) {
         rename("../../files/temp_flota_nueva/" . $name_directorio . "/" . $nombre_fichero, "../../files/temp_flota_nueva/" . $name_directorio . "/" . $name_xlsx . "." . $extension);
         if ($extension == "xlsx") {
 //            echo 1;
-            require './leer_xlsx_new_bus_controller.php';
+            require 'leer_xlsx_new_bus_controller.php';
         } else {
             echo "ARCHIVO NO COMPATIBLE";
         }
@@ -40,5 +40,5 @@ if ($_POST) {
         echo "No se pudo cargar el archivo en carpeta temp";
     }
 } else {
-    header("location ../");
+    header("location: ../");
 }
