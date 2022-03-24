@@ -572,7 +572,9 @@ function validarGuardarSocOut(ult_soc_in) {
     $("#formSocOut").validate({
         rules: {
             inpKWhOut: {
-                required: true
+                required: true,
+                max: 340,
+                min: 0
             },
             inpSocOut: {
                 required: true,

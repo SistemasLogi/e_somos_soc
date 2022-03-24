@@ -417,7 +417,7 @@ function formDatosSalida() {
         $("#sectionFormDatIngreso").html(datos);
 
         $("#btnGuardarSocOut").click(function () {
-            validarGuardarSocOut();
+            validarGuardarSocOut(ult_soc_in);
         });
         $("#btnResetOut").click(function () {
             resetFormSocOut();
@@ -446,17 +446,21 @@ function validarBuscarMovilOut() {
 
 /**
  * Metodo de validacion formsoc out
+ * @param {type} ult_soc_in
  * @returns {undefined}
  */
-function validarGuardarSocOut() {
+function validarGuardarSocOut(ult_soc_in) {
     $("#formSocOut").validate({
         rules: {
             inpKWhOut: {
-                required: true
+                required: true,
+                max: 340,
+                min: 0
             },
             inpSocOut: {
                 required: true,
-                max: 100
+                max: 100,
+                min: ult_soc_in
             },
             inpElectLineOut: {
                 required: true,
@@ -469,6 +473,8 @@ function validarGuardarSocOut() {
         }
     });
 }
+
+var ult_soc_in;
 
 /**
  * Metodo que retorna los datos del movil consultado en proceso out
@@ -495,6 +501,12 @@ function datos_movilOut() {
 
             if (arreglo_mov !== 0) {
                 temp = arreglo_mov[0];
+
+                if (temp.sin_in == "" || temp.sin_in == null) {
+                    ult_soc_in = parseFloat(1);
+                } else {
+                    ult_soc_in = parseFloat(temp.sin_in);
+                }
 
                 if (temp.em_id == 1) {
                     color = '#2ec551';
